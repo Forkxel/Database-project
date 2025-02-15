@@ -81,7 +81,16 @@
             }
             else if (action == "update")
             {
-                
+                Console.WriteLine("Write a number of table you want to update.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
+                int table = int.Parse(Console.ReadLine());
+                if (table < 1 || table > 5)
+                {
+                    Console.WriteLine("Invalid input.");
+                }
+                else
+                {
+                    db.UpdateData(table);
+                }
             }
             else
             {

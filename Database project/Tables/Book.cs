@@ -59,7 +59,16 @@ namespace Database_project.Tables
 
         public void UpdateData(Book element)
         {
-            throw new NotImplementedException();
+            using (SqlCommand command = new SqlCommand("UPDATE Books SET title = @title, authorID = @authorID, categoryID = @categoryID, price = @price, isAvailable = @isAvailable WHERE ID = @id;", connection))
+            {
+                command.Parameters.AddWithValue("@title", element.Title);
+                command.Parameters.AddWithValue("@authorID", element.AuthorID);
+                command.Parameters.AddWithValue("@categoryID", element.CategoryID);
+                command.Parameters.AddWithValue("@price", element.Price);
+                command.Parameters.AddWithValue("@isAvailable", element.IsAvailable);
+                command.Parameters.AddWithValue("@id", element.ID);
+                command.ExecuteNonQuery();
+            }
         }
 
         public void DeleteData(Book element)

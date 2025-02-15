@@ -35,7 +35,12 @@ namespace Database_project.Tables
 
         public void UpdateData(Category element)
         {
-            throw new NotImplementedException();
+            using (SqlCommand command = new SqlCommand("UPDATE Category SET name = @name WHERE ID = @id;", connection))
+            {
+                command.Parameters.AddWithValue("@name", element.Name);
+                command.Parameters.AddWithValue("@id", element.ID);
+                command.ExecuteNonQuery();
+            }
         }
 
         public void DeleteData(Category element)

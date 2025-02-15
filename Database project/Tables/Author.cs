@@ -34,7 +34,12 @@ namespace Database_project.Tables
 
         public void UpdateData(Author element)
         {
-            throw new NotImplementedException();
+            using (SqlCommand command = new SqlCommand("UPDATE Author SET name = @name WHERE ID = @id;", connection))
+            {
+                command.Parameters.AddWithValue("@name", element.Name);
+                command.Parameters.AddWithValue("@id", element.ID);
+                command.ExecuteNonQuery();
+            }
         }
 
         public void DeleteData(Author element)

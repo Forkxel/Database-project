@@ -43,7 +43,15 @@ namespace Database_project.Tables
 
         public void UpdateData(Loan element)
         {
-            throw new NotImplementedException();
+            using (SqlCommand command = new SqlCommand("UPDATE Loan SET memberID = @memberID, bookID = @bookID, loanDate = @loanDate, returnDate = @returnDate WHERE ID = @id;", connection))
+            {
+                command.Parameters.AddWithValue("@memberID", element.MemberID);
+                command.Parameters.AddWithValue("@bookID", element.BookID);
+                command.Parameters.AddWithValue("@loanDate", element.LoanDate);
+                command.Parameters.AddWithValue("@returnDate", element.ReturnDate);
+                command.Parameters.AddWithValue("@id", element.ID);
+                command.ExecuteNonQuery();
+            }
         }
 
         public void DeleteData(Loan element)

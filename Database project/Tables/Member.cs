@@ -41,7 +41,14 @@ namespace Database_project.Tables
 
         public void UpdateData(Member element)
         {
-            throw new NotImplementedException();
+            using (SqlCommand command = new SqlCommand("UPDATE Members SET name = @name, email = @email, membershipDate = @date WHERE ID = @id;", connection))
+            {
+                command.Parameters.AddWithValue("@name", element.Name);
+                command.Parameters.AddWithValue("@email", element.Email);
+                command.Parameters.AddWithValue("@date", element.MembershipDate);
+                command.Parameters.AddWithValue("@id", element.ID);
+                command.ExecuteNonQuery();
+            }
         }
 
         public void DeleteData(Member element)
