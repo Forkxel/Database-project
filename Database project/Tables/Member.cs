@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Database_project.Columns
+namespace Database_project.Tables
 {
-    public class Member
+    public class Member : Methods<Member>
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -19,6 +19,25 @@ namespace Database_project.Columns
             Name = name;
             Email = email;
             MembershipDate = membershipDate;
+        }
+
+        public Member()
+        {
+        }
+
+        public void InsertData(Member element)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateData(Member element)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteData(Member element)
+        {
+            throw new NotImplementedException();
         }
     }
 }

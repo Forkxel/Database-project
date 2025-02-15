@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Database_project.Columns;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -41,8 +42,8 @@ namespace Database_project
         {
             switch (table)
             {
-                case 1: 
-                    
+                case 1:
+                   
                     break;
                 case 2:
                     break;

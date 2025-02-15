@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Database_project.Columns
+namespace Database_project.Tables
 {
-    public class Loan
+    public class Loan : Methods<Loan>
     {
         public int ID { get; set; }
         public int MemberID { get; set; }
@@ -21,6 +21,25 @@ namespace Database_project.Columns
             BookID = bookID;
             LoanDate = loanDate;
             ReturnDate = returnDate;
+        }
+
+        public Loan()
+        {
+        }   
+
+        public void InsertData(Loan element)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateData(Loan element)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteData(Loan element)
+        {
+            throw new NotImplementedException();
         }
     }
 }

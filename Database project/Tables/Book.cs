@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Database_project.Columns
+namespace Database_project.Tables
 {
-    public class Book
+    public class Book : Methods<Book>
     {
         private float price;
 
@@ -36,6 +36,25 @@ namespace Database_project.Columns
             CategoryID = categoryID;
             Price = price;
             IsAvailable = isAvailable;
+        }
+
+        public Book()
+        {
+        }
+
+        public void InsertData(Book element)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateData(Book element)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteData(Book element)
+        {
+            throw new NotImplementedException();
         }
     }
 }
