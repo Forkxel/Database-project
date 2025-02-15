@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace Database_project.Tables
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        private SqlConnection connection = DatabaseConnection.GetInstance();
 
         public Category(int id, string name)
         {
@@ -23,7 +25,11 @@ namespace Database_project.Tables
 
         public void InsertData(Category element)
         {
-            throw new NotImplementedException();
+            using (SqlCommand command = new SqlCommand("INSERT INTO Category(name) VALUES (@name);", connection))
+            {
+                command.Parameters.AddWithValue("@name", element.Name);
+                command.ExecuteNonQuery();
+            }
         }
 
         public void UpdateData(Category element)

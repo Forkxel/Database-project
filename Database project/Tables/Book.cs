@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace Database_project.Tables
             }
         }
         public bool IsAvailable { get; set; }
+        private SqlConnection connection = DatabaseConnection.GetInstance();
 
         public Book(int id, string title, int authorID, int categoryID, float price, bool isAvailable)
         {
@@ -44,7 +46,15 @@ namespace Database_project.Tables
 
         public void InsertData(Book element)
         {
-            throw new NotImplementedException();
+            using (SqlCommand command = new SqlCommand("INSERT INTO Books (title, authorID, categoryID, price, isAvailable) VALUES (@title, @authorID, @categoryID, @price, @isAvailable);", connection))
+            {
+                command.Parameters.AddWithValue("@title", element.Title);
+                command.Parameters.AddWithValue("@authorID", element.AuthorID);
+                command.Parameters.AddWithValue("@categoryID", element.CategoryID);
+                command.Parameters.AddWithValue("@price", element.Price);
+                command.Parameters.AddWithValue("@isAvailable", element.IsAvailable);
+                command.ExecuteNonQuery();
+            }
         }
 
         public void UpdateData(Book element)
