@@ -8,17 +8,11 @@ namespace Database_project.Columns
 {
     public class Loan
     {
-        private int id;
-        private int memberID;
-        private int bookID;
-        private DateTime loanDate;
-        private DateTime returnDate;
-
-        public int ID { get => id; set => id = value; }
-        public int MemberID { get => memberID; set => memberID = value; }
-        public int BookID { get => bookID; set => bookID = value; }
-        public DateTime LoanDate { get => loanDate; set => loanDate = value; }
-        public DateTime ReturnDate { get => returnDate; set => returnDate = value; }
+        public int ID { get; set; }
+        public int MemberID { get; set; }
+        public int BookID { get; set; }
+        public DateTime LoanDate { get; set; }
+        public DateTime ReturnDate { get; set; }
 
         public Loan(int id, int memberID, int bookID, DateTime loanDate, DateTime returnDate)
         {

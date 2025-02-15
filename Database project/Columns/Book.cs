@@ -8,17 +8,12 @@ namespace Database_project.Columns
 {
     public class Book
     {
-        private int id;
-        private string title;
-        private int authorID;
-        private int categoryID;
         private float price;
-        private bool isAvailable;
 
-        public int ID { get => id; set => id = value; }
-        public string Title { get => title; set => title = value; }
-        public int AuthorID { get => authorID; set => authorID = value; }
-        public int CategoryID { get => categoryID; set => categoryID = value; }
+        public int ID { get; set; }
+        public string Title { get; set; }
+        public int AuthorID { get; set; }
+        public int CategoryID { get; set; }
         public float Price
         {
             get => price;
@@ -31,8 +26,7 @@ namespace Database_project.Columns
                 price = value;
             }
         }
-
-        public bool IsAvailable { get => isAvailable; set => isAvailable = value; }
+        public bool IsAvailable { get; set; }
 
         public Book(int id, string title, int authorID, int categoryID, float price, bool isAvailable)
         {

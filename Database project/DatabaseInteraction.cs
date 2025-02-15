@@ -36,5 +36,10 @@ namespace Database_project
 
             DatabaseConnection.CloseConnection();
         }
+
+        public void InsertData(int table)
+        {
+
+        }
     }
 }

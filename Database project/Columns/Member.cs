@@ -8,15 +8,10 @@ namespace Database_project.Columns
 {
     public class Member
     {
-        private int id;
-        private string name;
-        private string email;
-        private DateTime membershipDate;
-
-        public int ID { get => id; set => id = value; }
-        public string Name { get => name; set => name = value; }
-        public string Email { get => email; set => email = value; }
-        public DateTime MembershipDate { get => membershipDate; set => membershipDate = value; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public DateTime MembershipDate { get; set; }
 
         public Member(int id, string name, string email, DateTime membershipDate)
         {
