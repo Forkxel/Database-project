@@ -6,8 +6,7 @@
         {
             DatabaseInteraction db = new DatabaseInteraction();
 
-            db.ImportJSON("author.json", "name", "Author");
-            /*
+            //db.ImportJSON("author.json", "name", "Author");
 
             //db.CreateTables();
 
@@ -69,7 +68,16 @@
        
             else if (action == "delete")
             {
-                
+                Console.WriteLine("Write a number of table you want to delete from.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
+                int table = int.Parse(Console.ReadLine());
+                if (table < 1 || table > 5)
+                {
+                    Console.WriteLine("Invalid input.");
+                }
+                else
+                {
+                    db.DeleteData(table);
+                }
             }
             else if (action == "update")
             {
@@ -79,7 +87,6 @@
             {
                 Console.WriteLine("Invalid input.");
             }
-*/
         }  
     }
 }

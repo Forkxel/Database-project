@@ -64,7 +64,11 @@ namespace Database_project.Tables
 
         public void DeleteData(Book element)
         {
-            throw new NotImplementedException();
+            using (SqlCommand command = new SqlCommand("DELETE FROM Books WHERE ID = @id;", connection))
+            {
+                command.Parameters.AddWithValue("@id", element.ID);
+                command.ExecuteNonQuery();
+            }
         }
     }
 }

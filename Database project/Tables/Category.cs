@@ -40,7 +40,11 @@ namespace Database_project.Tables
 
         public void DeleteData(Category element)
         {
-            throw new NotImplementedException();
+            using (SqlCommand command = new SqlCommand("DELETE FROM Category WHERE ID = @id;", connection))
+            {
+                command.Parameters.AddWithValue("@id", element.ID);
+                command.ExecuteNonQuery();
+            }
         }
     }
 }
