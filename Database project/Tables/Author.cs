@@ -39,7 +39,11 @@ namespace Database_project.Tables
 
         public void DeleteData(Author element)
         {
-            throw new NotImplementedException();
+            using (SqlCommand command = new SqlCommand("DELETE FROM Author WHERE ID = @id;", connection))
+            {
+                command.Parameters.AddWithValue("@id", element.ID);
+                command.ExecuteNonQuery();
+            }
         }
     }
 }

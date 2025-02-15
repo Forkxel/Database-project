@@ -1,4 +1,5 @@
 ﻿using Database_project.Tables;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -11,8 +12,8 @@ namespace Database_project
 {
     public class DatabaseInteraction
     {
-        SqlConnection connection = DatabaseConnection.GetInstance();
-        Regex regex = new Regex("^(\\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\\d|3[0-1])$");
+        private SqlConnection connection = DatabaseConnection.GetInstance();
+        private Regex regex = new Regex("^(\\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\\d|3[0-1])$");
 
         public void CreateTables()
         {
@@ -37,6 +38,15 @@ namespace Database_project
                 command.ExecuteNonQuery();
             }
 
+            DatabaseConnection.CloseConnection();
+        }
+
+        public void DropTables()
+        {
+            using (SqlCommand command = new SqlCommand("DROP TABLE Category;", connection))
+            {
+                command.ExecuteNonQuery();
+            }
             DatabaseConnection.CloseConnection();
         }
 
@@ -119,6 +129,20 @@ namespace Database_project
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+            }
+        }
+
+        public void ImportJSON(string filePath, string jsonProperty, string table)
+        {
+            var listJSON = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(filePath));
+            var list = listJSON[jsonProperty];
+            foreach (var item in list)
+            {
+                using (SqlCommand command = new SqlCommand($"INSERT INTO {table}(name) VALUES (@name);", connection))
+                {
+                    command.Parameters.AddWithValue("@name", item);
+                    command.ExecuteNonQuery();
+                }
             }
         }
     }
