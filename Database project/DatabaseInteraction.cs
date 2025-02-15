@@ -17,7 +17,7 @@ namespace Database_project
             {
                 command.ExecuteNonQuery();
             }
-            using (SqlCommand command = new SqlCommand("CREATE TABLE Author (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, name VARCHAR(20) NOT NULL, birthDate datetime NOT NULL);", conn))
+            using (SqlCommand command = new SqlCommand("CREATE TABLE Author (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, name VARCHAR(20) NOT NULL);", conn))
             {
                 command.ExecuteNonQuery();
             }
