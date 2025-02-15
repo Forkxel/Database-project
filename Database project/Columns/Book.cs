@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Database_project
+namespace Database_project.Columns
 {
     public class Book
     {
@@ -36,12 +36,12 @@ namespace Database_project
 
         public Book(int id, string title, int authorID, int categoryID, float price, bool isAvailable)
         {
-            this.ID = id;
-            this.Title = title;
-            this.AuthorID = authorID;
-            this.CategoryID = categoryID;
-            this.Price = price;
-            this.IsAvailable = isAvailable;
+            ID = id;
+            Title = title;
+            AuthorID = authorID;
+            CategoryID = categoryID;
+            Price = price;
+            IsAvailable = isAvailable;
         }
     }
 }

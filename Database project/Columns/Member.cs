@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Database_project
+namespace Database_project.Columns
 {
     public class Member
     {
@@ -20,10 +20,10 @@ namespace Database_project
 
         public Member(int id, string name, string email, DateTime membershipDate)
         {
-            this.ID = id;
-            this.Name = name;
-            this.Email = email;
-            this.MembershipDate = membershipDate;
+            ID = id;
+            Name = name;
+            Email = email;
+            MembershipDate = membershipDate;
         }
     }
 }

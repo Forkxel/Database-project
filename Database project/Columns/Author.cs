@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Database_project
+namespace Database_project.Columns
 {
-    public class Category
+    public class Author
     {
         private int id;
         private string name;
@@ -14,10 +14,10 @@ namespace Database_project
         public int ID { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
 
-        public Category(int id, string name)
+        public Author(int id, string name)
         {
-            this.ID = id;
-            this.Name = name;
+            ID = id;
+            Name = name;
         }
     }
 }

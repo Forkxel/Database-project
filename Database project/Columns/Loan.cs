@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Database_project
+namespace Database_project.Columns
 {
     public class Loan
     {
@@ -22,11 +22,11 @@ namespace Database_project
 
         public Loan(int id, int memberID, int bookID, DateTime loanDate, DateTime returnDate)
         {
-            this.ID = id;
-            this.MemberID = memberID;
-            this.BookID = bookID;
-            this.LoanDate = loanDate;
-            this.ReturnDate = returnDate;
+            ID = id;
+            MemberID = memberID;
+            BookID = bookID;
+            LoanDate = loanDate;
+            ReturnDate = returnDate;
         }
     }
 }
