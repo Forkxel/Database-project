@@ -4,7 +4,11 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            DatabaseInteraction db = new DatabaseInteraction();
+
+            //db.CreateTables();
+
+
         }
     }
 }
