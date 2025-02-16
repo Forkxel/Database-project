@@ -6,9 +6,6 @@
         {
             DatabaseInteraction db = new DatabaseInteraction();
 
-            //db.ImportJSON("author.json", "name", "Author");
-            //db.ImportJSON("categories.json", "categories", "Category");
-
             db.CreateTables();
 
             bool run = true;
@@ -21,7 +18,7 @@
                     string action = Console.ReadLine();
                     if (action == "insert")
                     {
-                        Console.WriteLine("Write a number of table you want to insert into.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
+                        Console.WriteLine("Write a number of the table you want to insert into.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
                         int table = int.Parse(Console.ReadLine());
                         if (table < 1 || table > 5)
                         {
@@ -29,15 +26,12 @@
                             Console.WriteLine();
                             break;
                         }
-                        else
-                        {
-                            db.InsertData(table);
-                        }
+                        db.InsertData(table);
                     }
 
                     else if (action == "delete")
                     {
-                        Console.WriteLine("Write a number of table you want to delete from.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
+                        Console.WriteLine("Write a number of the table you want to delete from.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
                         int table = int.Parse(Console.ReadLine());
                         if (table < 1 || table > 5)
                         {
@@ -45,14 +39,11 @@
                             Console.WriteLine();
                             break;
                         }
-                        else
-                        {
-                            db.DeleteData(table);
-                        }
+                        db.DeleteData(table);
                     }
                     else if (action == "update")
                     {
-                        Console.WriteLine("Write a number of table you want to update.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
+                        Console.WriteLine("Write a number of the table you want to update.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
                         int table = int.Parse(Console.ReadLine());
                         if (table < 1 || table > 5)
                         {
@@ -60,14 +51,32 @@
                             Console.WriteLine();
                             break;
                         }
-                        else
-                        {
-                            db.UpdateData(table);
-                        }
+                        db.UpdateData(table);
                     }
                     else if (action == "exit")
                     {
                         run = false;
+                    }
+                    else if (action == "import")
+                    {
+                        Console.WriteLine("To import data from JSON open directory \\Database project\\Database project\\bin\\Debug\\net8.0 " +
+                                          "\nIn this directory you will find file named import.json " +
+                                          "\nOpen this file and add custom names for Author and Category tables. " +
+                                          "\nSave this file and restart the program. \nChoose import again and write y to the Console.");
+                        Console.WriteLine();
+                        
+                        string answear = Console.ReadLine().ToLower();
+                        if (answear.Equals("y"))
+                        {
+                            db.ImportJSON();
+                            Console.WriteLine("Import complete.");
+                            Console.WriteLine();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input.");
+                            Console.WriteLine();
+                        }
                     }
                     else
                     {

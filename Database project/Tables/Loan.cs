@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Database_project.Tables
 {
-    public class Loan : Methods<Loan>
+    public class Loan : IMethods<Loan>
     {
         public int ID { get; set; }
         public int MemberID { get; set; }
@@ -25,9 +25,7 @@ namespace Database_project.Tables
             ReturnDate = returnDate;
         }
 
-        public Loan()
-        {
-        }   
+        public Loan() {}   
 
         public void InsertData(Loan element)
         {
@@ -89,6 +87,8 @@ namespace Database_project.Tables
             using (SqlCommand command = new SqlCommand("Select * FROM Loans;", connection))
             {
                 SqlDataReader reader = command.ExecuteReader();
+                Console.WriteLine("ID, MemberID, BookID, Loan Date, Return Date");
+                Console.WriteLine();
                 while (reader.Read())
                 {
                     Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetInt32(1)}, {reader.GetInt32(2)}, {reader.GetDateTime(3).ToString("yyyy-MM-dd")}, {reader.GetDateTime(4).ToString("yyyy-MM-dd")}");

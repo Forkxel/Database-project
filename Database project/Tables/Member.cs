@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Database_project.Tables
 {
-    public class Member : Methods<Member>
+    public class Member : IMethods<Member>
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -24,9 +24,7 @@ namespace Database_project.Tables
             MembershipDate = membershipDate;
         }
 
-        public Member()
-        {
-        }
+        public Member() {}
 
         public void InsertData(Member element)
         {
@@ -83,6 +81,8 @@ namespace Database_project.Tables
             using (SqlCommand command = new SqlCommand("Select * FROM Members;", connection))
             {
                 SqlDataReader reader = command.ExecuteReader();
+                Console.WriteLine("ID, Name, Email, MembershipDate");
+                Console.WriteLine();
                 while (reader.Read())
                 {
                     Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetString(2)}, {reader.GetDateTime(3).ToString("yyyy-mm-dd")}");

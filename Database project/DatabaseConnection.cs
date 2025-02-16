@@ -28,16 +28,6 @@ namespace Database_project
             return conn;
         }
 
-        public static void CloseConnection()
-        {
-            if (conn != null)
-            {
-                conn.Close();
-                conn.Dispose();
-                conn = null;
-            }
-        }
-
         private static string ReadSetting(string key)
         {
             var appSettings = ConfigurationManager.AppSettings;

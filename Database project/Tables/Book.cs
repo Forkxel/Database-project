@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Database_project.Tables
 {
-    public class Book : Methods<Book>
+    public class Book : IMethods<Book>
     {
         private float price;
 
@@ -15,6 +15,7 @@ namespace Database_project.Tables
         public string Title { get; set; }
         public int AuthorID { get; set; }
         public int CategoryID { get; set; }
+
         public float Price
         {
             get => price;
@@ -24,9 +25,11 @@ namespace Database_project.Tables
                 {
                     throw new ArgumentException("Price cannot be negative");
                 }
+
                 price = value;
             }
         }
+
         public bool IsAvailable { get; set; }
         private SqlConnection connection = DatabaseConnection.GetInstance();
 
@@ -40,9 +43,7 @@ namespace Database_project.Tables
             IsAvailable = isAvailable;
         }
 
-        public Book()
-        {
-        }
+        public Book() {}
 
         public void InsertData(Book element)
         {
@@ -109,6 +110,8 @@ namespace Database_project.Tables
             using (SqlCommand command = new SqlCommand("SELECT * FROM Books", connection))
             {
                 SqlDataReader reader = command.ExecuteReader();
+                Console.WriteLine("ID, Title, AuthorID, CategoryID, Price, IsAvailable");
+                Console.WriteLine();
                 while (reader.Read())
                 {
                     Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetInt32(2)}, {reader.GetInt32(3)}, {reader.GetDouble(4)}, {reader.GetBoolean(5)}");

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Database_project.Tables
 {
-    public class Category : Methods<Category>
+    public class Category : IMethods<Category>
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -20,9 +20,7 @@ namespace Database_project.Tables
             Name = name;
         }
 
-        public Category()
-        {
-        }
+        public Category() {}
 
         public void InsertData(Category element)
         {
@@ -57,6 +55,8 @@ namespace Database_project.Tables
             using (SqlCommand command = new SqlCommand("Select * FROM Category;", connection))
             {
                 SqlDataReader reader = command.ExecuteReader();
+                Console.WriteLine("ID, Name");
+                Console.WriteLine();
                 while (reader.Read())
                 {
                     Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Database_project.Tables
 {
-    public class Author : Methods<Author>
+    public class Author : IMethods<Author>
     {
         private SqlConnection connection = DatabaseConnection.GetInstance();
         public int ID { get; set; }
@@ -19,9 +19,7 @@ namespace Database_project.Tables
             Name = name;
         }
 
-        public Author()
-        {
-        }
+        public Author() {}
 
         public void InsertData(Author element)
         {
@@ -53,9 +51,11 @@ namespace Database_project.Tables
 
         public void WriteAll()
         {
-            using (SqlCommand command = new SqlCommand("Select * FROM Author;", connection))
+            using (SqlCommand command = new SqlCommand("SELECT * FROM Author;", connection))
             {
                 SqlDataReader reader = command.ExecuteReader();
+                Console.WriteLine("ID, Name");
+                Console.WriteLine();
                 while (reader.Read())
                 {
                     Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");

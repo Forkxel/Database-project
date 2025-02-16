@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -72,18 +73,17 @@ namespace Database_project
         {
             try
             {
-
                 switch (table)
                 {
                     case 1:
                         Console.WriteLine();
-                        Console.WriteLine("Enter Member Name: ");
+                        Console.WriteLine("Enter member name: ");
                         string memberName = Console.ReadLine();
                         Console.WriteLine();
-                        Console.WriteLine("Enter Member Email: ");
+                        Console.WriteLine("Enter member e-mail: ");
                         string memberEmail = Console.ReadLine();
                         Console.WriteLine();
-                        Console.WriteLine("Enter Membership Date (yyyy-MM-dd): ");
+                        Console.WriteLine("Enter membership date (yyyy-mm-dd): ");
                         string membershipDate = Console.ReadLine();
                         Console.WriteLine();
                         if (!regex.IsMatch(membershipDate))
@@ -97,21 +97,21 @@ namespace Database_project
                         break;
                     case 2:
                         Console.WriteLine();
-                        Console.WriteLine("Enter Book Title: ");
+                        Console.WriteLine("Enter book Title: ");
                         string bookTitle = Console.ReadLine();
                         Console.WriteLine();
                         author.WriteAll();
-                        Console.WriteLine("Enter Author ID: ");
+                        Console.WriteLine("Enter author ID: ");
                         int authorID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
                         category.WriteAll();
-                        Console.WriteLine("Enter Category ID: ");
+                        Console.WriteLine("Enter category ID: ");
                         int categoryID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Console.WriteLine("Enter Price: ");
+                        Console.WriteLine("Enter price: ");
                         float price = float.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Console.WriteLine("Is Available (true/false): ");
+                        Console.WriteLine("Is available (true/false): ");
                         bool isAvailable = bool.Parse(Console.ReadLine());
                         Console.WriteLine();
                         book.InsertData(new Book(0, bookTitle, authorID, categoryID, price, isAvailable));
@@ -119,14 +119,14 @@ namespace Database_project
                     case 3:
                         Console.WriteLine();
                         member.WriteAll();
-                        Console.WriteLine("Enter Member ID: ");
+                        Console.WriteLine("Enter member ID: ");
                         int memberID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
                         book.WriteAll();
-                        Console.WriteLine("Enter Book ID: ");
+                        Console.WriteLine("Enter book ID: ");
                         int bookID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Console.WriteLine("Enter Loan Date (yyyy-MM-dd): ");
+                        Console.WriteLine("Enter loan date (yyyy-mm-dd): ");
                         string loanDate = Console.ReadLine();
                         Console.WriteLine();
                         if (!regex.IsMatch(loanDate))
@@ -135,7 +135,7 @@ namespace Database_project
                             Console.WriteLine();
                             break;
                         }
-                        Console.WriteLine("Enter Return Date (yyyy-MM-dd): ");
+                        Console.WriteLine("Enter return date (yyyy-mm-dd): ");
                         Console.WriteLine();
                         string returnDate = Console.ReadLine();
                         if (!regex.IsMatch(returnDate))
@@ -148,14 +148,14 @@ namespace Database_project
                         break;
                     case 4:
                         Console.WriteLine();
-                        Console.WriteLine("Enter Author Name: ");
+                        Console.WriteLine("Enter author Name: ");
                         string authorName = Console.ReadLine();
                         Console.WriteLine();
                         author.InsertData(new Author(0, authorName));
                         break;
                     case 5:
                         Console.WriteLine();
-                        Console.WriteLine("Enter Category Name: ");
+                        Console.WriteLine("Enter category Name: ");
                         string categoryName = Console.ReadLine();
                         Console.WriteLine();
                         category.InsertData(new Category(0, categoryName));
@@ -177,7 +177,7 @@ namespace Database_project
                     case 1:
                         Console.WriteLine();
                         member.WriteAll();
-                        Console.WriteLine("Enter Member ID: ");
+                        Console.WriteLine("Enter member ID: ");
                         int memberID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
                         member.DeleteData(new Member(memberID, "", "", ""));
@@ -185,7 +185,7 @@ namespace Database_project
                     case 2:
                         Console.WriteLine();
                         book.WriteAll();
-                        Console.WriteLine("Enter Book ID: ");
+                        Console.WriteLine("Enter book ID: ");
                         int bookID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
                         book.DeleteData(new Book(bookID, "", 0, 0, 0, false));
@@ -193,7 +193,7 @@ namespace Database_project
                     case 3:
                         Console.WriteLine();
                         loan.WriteAll();
-                        Console.WriteLine("Enter Loan ID: ");
+                        Console.WriteLine("Enter loan ID: ");
                         int loanID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
                         loan.DeleteData(new Loan(loanID, 0, 0, "", ""));
@@ -201,7 +201,7 @@ namespace Database_project
                     case 4:
                         Console.WriteLine();
                         author.WriteAll();
-                        Console.WriteLine("Enter Author ID: ");
+                        Console.WriteLine("Enter author ID: ");
                         int authorID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
                         author.DeleteData(new Author(authorID, ""));
@@ -209,7 +209,7 @@ namespace Database_project
                     case 5:
                         Console.WriteLine();
                         category.WriteAll();
-                        Console.WriteLine("Enter Category ID: ");
+                        Console.WriteLine("Enter category ID: ");
                         int categoryID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
                         category.DeleteData(new Category(categoryID, ""));
@@ -244,10 +244,10 @@ namespace Database_project
                     case 1:
                         Console.WriteLine();
                         member.WriteAll();
-                        Console.WriteLine("Enter Member ID: ");
+                        Console.WriteLine("Enter member ID: ");
                         int memberID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Members WHERE ID = @id;", connection))
+                        using (SqlCommand command = new SqlCommand("SELECT * FROM Members WHERE ID = @id;", connection))
                         {
                             command.Parameters.AddWithValue("@id", memberID);
                             SqlDataReader reader = command.ExecuteReader();
@@ -255,7 +255,7 @@ namespace Database_project
                             {
                                 memberName = reader.GetString(1);
                                 memberEmail = reader.GetString(2);
-                                membershipDate = reader.GetDateTime(3).ToString("yyyy-MM-dd");
+                                membershipDate = reader.GetDateTime(3).ToString("yyyy-mm-dd");
                             }
                             reader.Close();
                             Console.WriteLine();
@@ -285,19 +285,19 @@ namespace Database_project
                             {
                                 case 1:
                                     Console.WriteLine();
-                                    Console.WriteLine("Enter Member Name: ");
+                                    Console.WriteLine("Enter member name: ");
                                     memberName = Console.ReadLine();
                                     Console.WriteLine();
                                     break;
                                 case 2:
                                     Console.WriteLine();
-                                    Console.WriteLine("Enter Member Email: ");
+                                    Console.WriteLine("Enter member email: ");
                                     memberEmail = Console.ReadLine();
                                     Console.WriteLine();
                                     break;
                                 case 3:
                                     Console.WriteLine();
-                                    Console.WriteLine("Enter Membership Date (yyyy-MM-dd): ");
+                                    Console.WriteLine("Enter membership date (yyyy-mm-dd): ");
                                     membershipDate = Console.ReadLine();
                                     Console.WriteLine();
                                     if (!regex.IsMatch(membershipDate))
@@ -313,10 +313,10 @@ namespace Database_project
                     case 2:
                         Console.WriteLine();
                         book.WriteAll();
-                        Console.WriteLine("Enter Book ID: ");
+                        Console.WriteLine("Enter book ID: ");
                         int bookID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Books WHERE ID = @id;", connection))
+                        using (SqlCommand command = new SqlCommand("SELECT * FROM Books WHERE ID = @id;", connection))
                         {
                             command.Parameters.AddWithValue("@id", bookID);
                             SqlDataReader reader = command.ExecuteReader();
@@ -355,33 +355,33 @@ namespace Database_project
                             {
                                 case 1:
                                     Console.WriteLine();
-                                    Console.WriteLine("Enter Book Title: ");
+                                    Console.WriteLine("Enter book Title: ");
                                     bookTitle = Console.ReadLine();
                                     Console.WriteLine();
                                     break;
                                 case 2:
                                     Console.WriteLine();
                                     author.WriteAll();
-                                    Console.WriteLine("Enter Author ID: ");
+                                    Console.WriteLine("Enter author ID: ");
                                     bookAuthorID = int.Parse(Console.ReadLine());
                                     Console.WriteLine();
                                     break;
                                 case 3:
                                     Console.WriteLine();
                                     category.WriteAll();
-                                    Console.WriteLine("Enter Category ID: ");
+                                    Console.WriteLine("Enter category ID: ");
                                     bookCategoryID = int.Parse(Console.ReadLine());
                                     Console.WriteLine();
                                     break;
                                 case 4:
                                     Console.WriteLine();
-                                    Console.WriteLine("Enter Price: ");
+                                    Console.WriteLine("Enter price: ");
                                     price = float.Parse(Console.ReadLine());
                                     Console.WriteLine();
                                     break;
                                 case 5:
                                     Console.WriteLine();
-                                    Console.WriteLine("Is Available (true/false): ");
+                                    Console.WriteLine("Is available (true/false): ");
                                     isAvailable = bool.Parse(Console.ReadLine());
                                     Console.WriteLine();
                                     break;
@@ -392,10 +392,10 @@ namespace Database_project
                     case 3:
                         Console.WriteLine();
                         loan.WriteAll();
-                        Console.WriteLine("Enter Loan ID: ");
+                        Console.WriteLine("Enter loan ID: ");
                         int loanID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Loans WHERE ID = @id;", connection))
+                        using (SqlCommand command = new SqlCommand("SELECT * FROM Loans WHERE ID = @id;", connection))
                         {
                             command.Parameters.AddWithValue("@id", loanID);
                             SqlDataReader reader = command.ExecuteReader();
@@ -403,8 +403,8 @@ namespace Database_project
                             {
                                 loanMemberID = reader.GetInt32(1);
                                 loanBookID = reader.GetInt32(2);
-                                loanDate = reader.GetDateTime(3).ToString("yyyy-MM-dd");
-                                returnDate = reader.GetDateTime(4).ToString("yyyy-MM-dd");
+                                loanDate = reader.GetDateTime(3).ToString("yyyy-mm-dd");
+                                returnDate = reader.GetDateTime(4).ToString("yyyy-mm-dd");
                             }
                             reader.Close();
                         }
@@ -434,20 +434,20 @@ namespace Database_project
                                 case 1:
                                     Console.WriteLine();
                                     member.WriteAll();
-                                    Console.WriteLine("Enter Member ID: ");
+                                    Console.WriteLine("Enter member ID: ");
                                     loanMemberID = int.Parse(Console.ReadLine());
                                     Console.WriteLine();
                                     break;
                                 case 2:
                                     Console.WriteLine();
                                     book.WriteAll();
-                                    Console.WriteLine("Enter Book ID: ");
+                                    Console.WriteLine("Enter book ID: ");
                                     loanBookID = int.Parse(Console.ReadLine());
                                     Console.WriteLine();
                                     break;
                                 case 3:
                                     Console.WriteLine();
-                                    Console.WriteLine("Enter Loan Date (yyyy-MM-dd): ");
+                                    Console.WriteLine("Enter loan date (yyyy-MM-dd): ");
                                     loanDate = Console.ReadLine();
                                     Console.WriteLine();
                                     if (!regex.IsMatch(loanDate))
@@ -458,7 +458,7 @@ namespace Database_project
                                     break;
                                 case 4:
                                     Console.WriteLine();
-                                    Console.WriteLine("Enter Return Date (yyyy-MM-dd): ");
+                                    Console.WriteLine("Enter return date (yyyy-MM-dd): ");
                                     returnDate = Console.ReadLine();
                                     Console.WriteLine();
                                     if (!regex.IsMatch(returnDate))
@@ -474,10 +474,10 @@ namespace Database_project
                     case 4:
                         Console.WriteLine();
                         author.WriteAll();
-                        Console.WriteLine("Enter Author ID: ");
+                        Console.WriteLine("Enter author ID: ");
                         int authorID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Console.WriteLine("Enter New Author Name: ");
+                        Console.WriteLine("Enter new author full name: ");
                         string authorName = Console.ReadLine();
                         Console.WriteLine();
                         author.UpdateData(new Author(authorID, authorName), null);
@@ -485,10 +485,10 @@ namespace Database_project
                     case 5:
                         Console.WriteLine();
                         category.WriteAll();
-                        Console.WriteLine("Enter Category ID: ");
+                        Console.WriteLine("Enter category ID: ");
                         int categoryID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Console.WriteLine("Enter New Category Name: ");
+                        Console.WriteLine("Enter new category name: ");
                         string categoryName = Console.ReadLine();
                         Console.WriteLine();
                         category.UpdateData(new Category(categoryID, categoryName), null);
@@ -501,13 +501,26 @@ namespace Database_project
             }
         }
 
-        public void ImportJSON(string filePath, string jsonProperty, string table)
+        public void ImportJSON()
         {
-            var listJSON = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText(filePath));
-            var list = listJSON[jsonProperty];
-            foreach (var item in list)
+            var authorJSON = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText("import.json"));
+            var authors = authorJSON["author"];
+            
+            var categoryJSON = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText("import.json"));
+            var categories = categoryJSON["category"];
+            
+            foreach (var item in authors)
             {
-                using (SqlCommand command = new SqlCommand($"INSERT INTO {table}(name) VALUES (@name);", connection))
+                using (SqlCommand command = new SqlCommand($"INSERT INTO Author(name) VALUES (@name);", connection))
+                {
+                    command.Parameters.AddWithValue("@name", item);
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            foreach (var item in categories)
+            {
+                using (SqlCommand command = new SqlCommand($"INSERT INTO Category(name) VALUES (@name);", connection))
                 {
                     command.Parameters.AddWithValue("@name", item);
                     command.ExecuteNonQuery();

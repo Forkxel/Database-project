@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Database_project
 {
-    interface Methods<T>
+    interface IMethods<T>
     {
         void InsertData(T element);
         void UpdateData(T element, List<int> column);
