@@ -103,5 +103,19 @@ namespace Database_project.Tables
                 command.ExecuteNonQuery();
             }
         }
+
+        public void WriteAll()
+        {
+            using (SqlCommand command = new SqlCommand("SELECT * FROM Books", connection))
+            {
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetInt32(2)}, {reader.GetInt32(3)}, {reader.GetDouble(4)}, {reader.GetBoolean(5)}");
+                }
+                reader.Close();
+                Console.WriteLine();
+            }
+        }
     }
 }

@@ -14,31 +14,58 @@ namespace Database_project
     {
         private SqlConnection connection = DatabaseConnection.GetInstance();
         private Regex regex = new Regex("^(\\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\\d|3[0-1])$");
+        private Book book = new();
+        private Author author = new();
+        private Category category = new();
+        private Loan loan = new();
+        private Member member = new();
 
         public void CreateTables()
         {
-            using (SqlCommand command = new SqlCommand("CREATE TABLE Members (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, name VARCHAR(20) NOT NULL, email VARCHAR(50) NOT NULL, membershipDate datetime NOT NULL);", connection))
+            try
             {
-                command.ExecuteNonQuery();
+                using (SqlCommand command = new SqlCommand("CREATE TABLE Members (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, name VARCHAR(20) NOT NULL, email VARCHAR(50) NOT NULL, membershipDate datetime NOT NULL);", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
-            using (SqlCommand command = new SqlCommand("CREATE TABLE Author (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, name VARCHAR(20) NOT NULL);", connection))
-            {
-                command.ExecuteNonQuery();
-            }
-            using(SqlCommand command = new SqlCommand("CREATE TABLE Category (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, name VARCHAR(20) NOT NULL);", connection))
-            {
-                command.ExecuteNonQuery();
-            }
-            using (SqlCommand command = new SqlCommand("CREATE TABLE Books (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, title VARCHAR(50) NOT NULL, authorId INT FOREIGN KEY REFERENCES Author(id) NOT NULL, categoryId INT FOREIGN KEY REFERENCES Category(id) NOT NULL, price float NOT NULL, isAvailable bit NOT NULL);", connection))
-            {
-                command.ExecuteNonQuery();
-            }
-            using (SqlCommand command = new SqlCommand("CREATE TABLE Loans (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, memberId INT FOREIGN KEY REFERENCES Members(id) NOT NULL, bookId INT FOREIGN KEY REFERENCES Books(id) NOT NULL, loanDate datetime NOT NULL, returnDate datetime);", connection))
-            {
-                command.ExecuteNonQuery();
-            }
+            catch (Exception e) {}
 
-            DatabaseConnection.CloseConnection();
+            try
+            {
+                using (SqlCommand command = new SqlCommand("CREATE TABLE Author (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, name VARCHAR(20) NOT NULL);", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e) {}
+
+            try
+            {
+                using(SqlCommand command = new SqlCommand("CREATE TABLE Category (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, name VARCHAR(20) NOT NULL);", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e) {}
+
+            try
+            {
+                using (SqlCommand command = new SqlCommand("CREATE TABLE Books (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, title VARCHAR(50) NOT NULL, authorId INT FOREIGN KEY REFERENCES Author(id) NOT NULL, categoryId INT FOREIGN KEY REFERENCES Category(id) NOT NULL, price float NOT NULL, isAvailable bit NOT NULL);", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e){}
+
+            try
+            {
+                using (SqlCommand command = new SqlCommand("CREATE TABLE Loans (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, memberId INT FOREIGN KEY REFERENCES Members(id) NOT NULL, bookId INT FOREIGN KEY REFERENCES Books(id) NOT NULL, loanDate datetime NOT NULL, returnDate datetime);", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e) {}
         }
 
         public void InsertData(int table)
@@ -62,11 +89,9 @@ namespace Database_project
                         if (!regex.IsMatch(membershipDate))
                         {
                             Console.WriteLine("Invalid date format.");
-                            break;
                         }
                         else
                         {
-                            Member member = new Member();
                             member.InsertData(new Member(0, memberName, memberEmail, membershipDate));
                         }
                         break;
@@ -75,29 +100,11 @@ namespace Database_project
                         Console.WriteLine("Enter Book Title: ");
                         string bookTitle = Console.ReadLine();
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Author;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        author.WriteAll();
                         Console.WriteLine("Enter Author ID: ");
                         int authorID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Category;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        category.WriteAll();
                         Console.WriteLine("Enter Category ID: ");
                         int categoryID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
@@ -107,34 +114,15 @@ namespace Database_project
                         Console.WriteLine("Is Available (true/false): ");
                         bool isAvailable = bool.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Book book = new Book();
                         book.InsertData(new Book(0, bookTitle, authorID, categoryID, price, isAvailable));
                         break;
                     case 3:
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Members;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetString(2)}, {reader.GetDateTime(3).ToString("yyyy-MM-dd")}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        member.WriteAll();
                         Console.WriteLine("Enter Member ID: ");
                         int memberID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Books;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetInt32(2)}, {reader.GetInt32(3)}, {reader.GetDouble(4)}, {reader.GetBoolean(5)}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        book.WriteAll();
                         Console.WriteLine("Enter Book ID: ");
                         int bookID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
@@ -156,7 +144,6 @@ namespace Database_project
                             Console.WriteLine();
                             break;
                         }
-                        Loan loan = new Loan();
                         loan.InsertData(new Loan(0, memberID, bookID, loanDate, returnDate));
                         break;
                     case 4:
@@ -164,7 +151,6 @@ namespace Database_project
                         Console.WriteLine("Enter Author Name: ");
                         string authorName = Console.ReadLine();
                         Console.WriteLine();
-                        Author author = new Author();
                         author.InsertData(new Author(0, authorName));
                         break;
                     case 5:
@@ -172,12 +158,9 @@ namespace Database_project
                         Console.WriteLine("Enter Category Name: ");
                         string categoryName = Console.ReadLine();
                         Console.WriteLine();
-                        Console.WriteLine();
-                        Category category = new Category();
                         category.InsertData(new Category(0, categoryName));
                         break;
                 }
-
             }
             catch (Exception e)
             {
@@ -193,96 +176,46 @@ namespace Database_project
                 {
                     case 1:
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Members;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetString(2)}, {reader.GetString(3)}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        member.WriteAll();
                         Console.WriteLine("Enter Member ID: ");
                         int memberID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Member member = new Member();
                         member.DeleteData(new Member(memberID, "", "", ""));
                         break;
                     case 2:
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Books;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetInt32(2)}, {reader.GetInt32(3)}, {reader.GetDouble(4)}, {reader.GetBoolean(5)}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        book.WriteAll();
                         Console.WriteLine("Enter Book ID: ");
                         int bookID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Book book = new Book();
                         book.DeleteData(new Book(bookID, "", 0, 0, 0, false));
                         break;
                     case 3:
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Loans;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetInt32(1)}, {reader.GetInt32(2)}, {reader.GetString(3)}, {reader.GetString(4)}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        loan.WriteAll();
                         Console.WriteLine("Enter Loan ID: ");
                         int loanID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Loan loan = new Loan();
                         loan.DeleteData(new Loan(loanID, 0, 0, "", ""));
                         break;
                     case 4:
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Author;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        author.WriteAll();
                         Console.WriteLine("Enter Author ID: ");
                         int authorID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Author author = new Author();
                         author.DeleteData(new Author(authorID, ""));
                         break;
                     case 5:
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Category;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                            Console.WriteLine("Enter Category ID: ");
-                            int categoryID = int.Parse(Console.ReadLine());
-                            Console.WriteLine();
-                            Category category = new Category();
-                            category.DeleteData(new Category(categoryID, ""));
-                            break;
-                        }
-                    }
+                        category.WriteAll();
+                        Console.WriteLine("Enter Category ID: ");
+                        int categoryID = int.Parse(Console.ReadLine());
+                        Console.WriteLine();
+                        category.DeleteData(new Category(categoryID, ""));
+                        break;
                 }
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
@@ -310,16 +243,7 @@ namespace Database_project
                 {
                     case 1:
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Members;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetString(2)}, {reader.GetDateTime(3).ToString("yyyy-mm-dd")}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        member.WriteAll();
                         Console.WriteLine("Enter Member ID: ");
                         int memberID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
@@ -380,26 +304,15 @@ namespace Database_project
                                     {
                                         Console.WriteLine("Invalid date format.");
                                         Console.WriteLine();
-                                        break;
                                     }
                                     break;
                             }
                         }
-                        Member member = new Member();
                         member.UpdateData(new Member(memberID, memberName, memberEmail, membershipDate), column);
                         break;
                     case 2:
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Books;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetInt32(2)}, {reader.GetInt32(3)}, {reader.GetDouble(4)}, {reader.GetBoolean(5)}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        book.WriteAll();
                         Console.WriteLine("Enter Book ID: ");
                         int bookID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
@@ -448,32 +361,14 @@ namespace Database_project
                                     break;
                                 case 2:
                                     Console.WriteLine();
-                                    using (SqlCommand command = new SqlCommand("Select * FROM Author;", connection))
-                                    {
-                                        SqlDataReader reader = command.ExecuteReader();
-                                        while (reader.Read())
-                                        {
-                                            Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");
-                                        }
-                                        reader.Close();
-                                        Console.WriteLine();
-                                    }
+                                    author.WriteAll();
                                     Console.WriteLine("Enter Author ID: ");
                                     bookAuthorID = int.Parse(Console.ReadLine());
                                     Console.WriteLine();
                                     break;
                                 case 3:
                                     Console.WriteLine();
-                                    using (SqlCommand command = new SqlCommand("Select * FROM Category;", connection))
-                                    {
-                                        SqlDataReader reader = command.ExecuteReader();
-                                        while (reader.Read())
-                                        {
-                                            Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");
-                                        }
-                                        reader.Close();
-                                        Console.WriteLine();
-                                    }
+                                    category.WriteAll();
                                     Console.WriteLine("Enter Category ID: ");
                                     bookCategoryID = int.Parse(Console.ReadLine());
                                     Console.WriteLine();
@@ -492,21 +387,11 @@ namespace Database_project
                                     break;
                             }
                         }
-                        Book book = new Book();
                         book.UpdateData(new Book(bookID, bookTitle, bookAuthorID, bookCategoryID, price, isAvailable), column);
                         break;
                     case 3:
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Loans;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetInt32(1)}, {reader.GetInt32(2)}, {reader.GetDateTime(3).ToString("yyyy-MM-dd")}, {reader.GetDateTime(4).ToString("yyyy-MM-dd")}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        loan.WriteAll();
                         Console.WriteLine("Enter Loan ID: ");
                         int loanID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
@@ -548,32 +433,14 @@ namespace Database_project
                             {
                                 case 1:
                                     Console.WriteLine();
-                                    using (SqlCommand command = new SqlCommand("Select * FROM Members;", connection))
-                                    {
-                                        SqlDataReader reader = command.ExecuteReader();
-                                        while (reader.Read())
-                                        {
-                                            Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetString(2)}, {reader.GetDateTime(3).ToString("yyyy-MM-dd")}");
-                                        }
-                                        reader.Close();
-                                        Console.WriteLine();
-                                    }
+                                    member.WriteAll();
                                     Console.WriteLine("Enter Member ID: ");
                                     loanMemberID = int.Parse(Console.ReadLine());
                                     Console.WriteLine();
                                     break;
                                 case 2:
                                     Console.WriteLine();
-                                    using (SqlCommand command = new SqlCommand("Select * FROM Books;", connection))
-                                    {
-                                        SqlDataReader reader = command.ExecuteReader();
-                                        while (reader.Read())
-                                        {
-                                            Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetInt32(2)}, {reader.GetInt32(3)}, {reader.GetDouble(4)}, {reader.GetBoolean(5)}");
-                                        }
-                                        reader.Close();
-                                        Console.WriteLine();
-                                    }
+                                    book.WriteAll();
                                     Console.WriteLine("Enter Book ID: ");
                                     loanBookID = int.Parse(Console.ReadLine());
                                     Console.WriteLine();
@@ -587,7 +454,6 @@ namespace Database_project
                                     {
                                         Console.WriteLine("Invalid date format.");
                                         Console.WriteLine();
-                                        break;
                                     }
                                     break;
                                 case 4:
@@ -599,54 +465,32 @@ namespace Database_project
                                     {
                                         Console.WriteLine("Invalid date format.");
                                         Console.WriteLine();
-                                        break;
                                     }
                                     break;
                             }
                         }
-                        Loan loan = new Loan();
                         loan.UpdateData(new Loan(loanID, loanMemberID, loanBookID, loanDate, returnDate), column);
                         break;
                     case 4:
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Author;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        author.WriteAll();
                         Console.WriteLine("Enter Author ID: ");
                         int authorID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
                         Console.WriteLine("Enter New Author Name: ");
                         string authorName = Console.ReadLine();
                         Console.WriteLine();
-                        Author author = new Author();
                         author.UpdateData(new Author(authorID, authorName), null);
                         break;
                     case 5:
                         Console.WriteLine();
-                        using (SqlCommand command = new SqlCommand("Select * FROM Category;", connection))
-                        {
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");
-                            }
-                            reader.Close();
-                            Console.WriteLine();
-                        }
+                        category.WriteAll();
                         Console.WriteLine("Enter Category ID: ");
                         int categoryID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
                         Console.WriteLine("Enter New Category Name: ");
                         string categoryName = Console.ReadLine();
                         Console.WriteLine();
-                        Category category = new Category();
                         category.UpdateData(new Category(categoryID, categoryName), null);
                         break;
                 }
@@ -656,8 +500,6 @@ namespace Database_project
                 Console.WriteLine(e.Message);
             }
         }
-
-
 
         public void ImportJSON(string filePath, string jsonProperty, string table)
         {

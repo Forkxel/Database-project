@@ -83,5 +83,19 @@ namespace Database_project.Tables
                 command.ExecuteNonQuery();
             }
         }
+
+        public void WriteAll()
+        {
+            using (SqlCommand command = new SqlCommand("Select * FROM Loans;", connection))
+            {
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetInt32(1)}, {reader.GetInt32(2)}, {reader.GetDateTime(3).ToString("yyyy-MM-dd")}, {reader.GetDateTime(4).ToString("yyyy-MM-dd")}");
+                }
+                reader.Close();
+                Console.WriteLine();
+            }
+        }
     }
 }

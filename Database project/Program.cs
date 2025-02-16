@@ -9,14 +9,14 @@
             //db.ImportJSON("author.json", "name", "Author");
             //db.ImportJSON("categories.json", "categories", "Category");
 
-            //db.CreateTables();
+            db.CreateTables();
 
             bool run = true;
             while (run)
             {
                 try
                 {
-                    Console.WriteLine("Do you want to insert, delete or update data?\nIf you want to exit the program write exit.");
+                    Console.WriteLine("Do you want to insert, delete or update data?\nIf you want to import data from JSON type import.\nIf you want to exit the program type exit.");
                     Console.WriteLine();
                     string action = Console.ReadLine();
                     if (action == "insert")
@@ -71,7 +71,7 @@
                     }
                     else
                     {
-                        Console.WriteLine("Invalid input. Write insert, delete or update");
+                        Console.WriteLine("Invalid input.");
                         Console.WriteLine();
                     }
                 }

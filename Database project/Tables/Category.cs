@@ -51,5 +51,19 @@ namespace Database_project.Tables
                 command.ExecuteNonQuery();
             }
         }
+
+        public void WriteAll()
+        {
+            using (SqlCommand command = new SqlCommand("Select * FROM Category;", connection))
+            {
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");
+                }
+                reader.Close();
+                Console.WriteLine();
+            }
+        }
     }
 }
