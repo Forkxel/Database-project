@@ -33,7 +33,7 @@ namespace Database_project.Tables
             }
         }
 
-        public void UpdateData(Category element)
+        public void UpdateData(Category element, List<int> column)
         {
             using (SqlCommand command = new SqlCommand("UPDATE Category SET name = @name WHERE ID = @id;", connection))
             {

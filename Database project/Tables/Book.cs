@@ -57,16 +57,40 @@ namespace Database_project.Tables
             }
         }
 
-        public void UpdateData(Book element)
+        public void UpdateData(Book element, List<int> column)
         {
-            using (SqlCommand command = new SqlCommand("UPDATE Books SET title = @title, authorID = @authorID, categoryID = @categoryID, price = @price, isAvailable = @isAvailable WHERE ID = @id;", connection))
+            string query = "UPDATE Books SET ";
+            for (int i = 0; i < column.Count; i++)
             {
+                switch (column[i])
+                {
+                    case 1: 
+                        query += "title = @title"; 
+                        break;
+                    case 2: 
+                        query += "authorID = @authorID"; 
+                        break;
+                    case 3: 
+                        query += "categoryID = @categoryID"; 
+                        break;
+                    case 4: 
+                        query += "price = @price"; 
+                        break;
+                    case 5: 
+                        query += "isAvailable = @isAvailable"; 
+                        break;
+                }
+                if (i < column.Count - 1) query += ", ";
+            }
+            query += " WHERE ID = @id;";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id", element.ID);
                 command.Parameters.AddWithValue("@title", element.Title);
                 command.Parameters.AddWithValue("@authorID", element.AuthorID);
                 command.Parameters.AddWithValue("@categoryID", element.CategoryID);
                 command.Parameters.AddWithValue("@price", element.Price);
                 command.Parameters.AddWithValue("@isAvailable", element.IsAvailable);
-                command.Parameters.AddWithValue("@id", element.ID);
                 command.ExecuteNonQuery();
             }
         }

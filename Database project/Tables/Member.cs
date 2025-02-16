@@ -39,9 +39,27 @@ namespace Database_project.Tables
             }
         }
 
-        public void UpdateData(Member element)
+        public void UpdateData(Member element, List<int> column)
         {
-            using (SqlCommand command = new SqlCommand("UPDATE Members SET name = @name, email = @email, membershipDate = @date WHERE ID = @id;", connection))
+            string query = "UPDATE Members SET ";
+            for (int i = 0; i < column.Count; i++)
+            {
+                switch (column[i])
+                {
+                    case 1: 
+                        query += "name = @name"; 
+                        break;
+                    case 2: 
+                        query += "email = @email"; 
+                        break;
+                    case 3: 
+                        query += "membershipDate = @date"; 
+                        break;
+                }
+                if (i < column.Count - 1) query += ", ";
+            }
+            query += " WHERE ID = @id;";
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@name", element.Name);
                 command.Parameters.AddWithValue("@email", element.Email);

@@ -160,7 +160,7 @@ namespace Database_project
                         book.DeleteData(new Book(bookID, "", 0, 0, 0, false));
                         break;
                     case 3:
-                        using (SqlCommand command = new SqlCommand("Select * FROM Loan;", connection))
+                        using (SqlCommand command = new SqlCommand("Select * FROM Loans;", connection))
                         {
                             SqlDataReader reader = command.ExecuteReader();
                             while (reader.Read())
@@ -211,6 +211,285 @@ namespace Database_project
                 Console.WriteLine(e.Message);
             }
         }
+
+        public void UpdateData(int table)
+        {
+            try
+            {
+                List<int> column = new List<int>();
+                string memberName = "";
+                string memberEmail = "";
+                string membershipDate = "";
+                string bookTitle = "";
+                int bookAuthorID = 0;
+                int bookCategoryID = 0;
+                float price = 0;
+                bool isAvailable = false;
+                int loanMemberID = 0;
+                int loanBookID = 0;
+                string loanDate = "";
+                string returnDate = "";
+                switch (table)
+                {
+                    case 1:
+                        using (SqlCommand command = new SqlCommand("Select * FROM Members;", connection))
+                        {
+                            SqlDataReader reader = command.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetString(2)}, {reader.GetDateTime(3).ToString("yyyy-mm-dd")}");
+                            }
+                            reader.Close();
+                        }
+                        Console.WriteLine("Enter Member ID: ");
+                        int memberID = int.Parse(Console.ReadLine());
+                        using (SqlCommand command = new SqlCommand("Select * FROM Members WHERE ID = @id;", connection))
+                        {
+                            command.Parameters.AddWithValue("@id", memberID);
+                            SqlDataReader reader = command.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                memberName = reader.GetString(1);
+                                memberEmail = reader.GetString(2);
+                                membershipDate = reader.GetDateTime(3).ToString("yyyy-MM-dd");
+                            }
+                            reader.Close();
+                        }
+                        Console.WriteLine("How many columns do you want to update?");
+                        int count = int.Parse(Console.ReadLine());
+                        Console.WriteLine("What columns do you want to update. \n1. Name \n2. E-mail\n3. Membership date");
+                        for (int i = 0; i < count; i++)
+                        {
+                            int col = int.Parse(Console.ReadLine());
+                            if (column.Contains(col))
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine("Table already selected.");
+                                i--;
+                            }
+                            else
+                            {
+                                column.Add(col);
+                            }
+                        }
+                        for (int j = 0; j < column.Count; j++)
+                        {
+                            switch (column[j])
+                            {
+                                case 1:
+                                    Console.WriteLine("Enter Member Name: ");
+                                    memberName = Console.ReadLine();
+                                    break;
+                                case 2:
+                                    Console.WriteLine("Enter Member Email: ");
+                                    memberEmail = Console.ReadLine();
+                                    break;
+                                case 3:
+                                    Console.WriteLine("Enter Membership Date (yyyy-MM-dd): ");
+                                    membershipDate = Console.ReadLine();
+                                    if (!regex.IsMatch(membershipDate))
+                                    {
+                                        Console.WriteLine("Invalid date format.");
+                                        break;
+                                    }
+                                    break;
+                            }
+                        }
+                        Member member = new Member();
+                        member.UpdateData(new Member(memberID, memberName, memberEmail, membershipDate), column);
+                        break;
+                    case 2:
+                        using (SqlCommand command = new SqlCommand("Select * FROM Books;", connection))
+                        {
+                            SqlDataReader reader = command.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetInt32(2)}, {reader.GetInt32(3)}, {reader.GetDouble(4)}, {reader.GetBoolean(5)}");
+                            }
+                            reader.Close();
+                        }
+                        Console.WriteLine("Enter Book ID: ");
+                        int bookID = int.Parse(Console.ReadLine());
+                        using (SqlCommand command = new SqlCommand("Select * FROM Books WHERE ID = @id;", connection))
+                        {
+                            command.Parameters.AddWithValue("@id", bookID);
+                            SqlDataReader reader = command.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                bookTitle = reader.GetString(1);
+                                bookAuthorID = reader.GetInt32(2);
+                                bookCategoryID = reader.GetInt32(3);
+                                price = (float)reader.GetDouble(4);
+                                isAvailable = reader.GetBoolean(5);
+                            }
+                            reader.Close();
+                        }
+                        Console.WriteLine("How many columns do you want to update?");
+                        int a = int.Parse(Console.ReadLine());
+                        Console.WriteLine("What columns do you want to update. \n1. Title \n2. Author ID\n3. Category ID\n4. Price\n5. Is Available");
+                        for (int i = 0; i < a; i++)
+                        {
+                            int col = int.Parse(Console.ReadLine());
+                            if (column.Contains(col))
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine("Table already selected.");
+                                i--;
+                            }
+                            else
+                            {
+                                column.Add(col);
+                            }
+                        }
+                        for (int j = 0; j < column.Count; j++)
+                        {
+                            switch (column[j])
+                            {
+                                case 1:
+                                    Console.WriteLine("Enter Book Title: ");
+                                    bookTitle = Console.ReadLine();
+                                    break;
+                                case 2:
+                                    Console.WriteLine("Enter Author ID: ");
+                                    bookAuthorID = int.Parse(Console.ReadLine());
+                                    break;
+                                case 3:
+                                    Console.WriteLine("Enter Category ID: ");
+                                    bookCategoryID = int.Parse(Console.ReadLine());
+                                    break;
+                                case 4:
+                                    Console.WriteLine("Enter Price: ");
+                                    price = float.Parse(Console.ReadLine());
+                                    break;
+                                case 5:
+                                    Console.WriteLine("Is Available (true/false): ");
+                                    isAvailable = bool.Parse(Console.ReadLine());
+                                    break;
+                            }
+                        }
+                        Book book = new Book();
+                        book.UpdateData(new Book(bookID, bookTitle, bookAuthorID, bookCategoryID, price, isAvailable), column);
+                        break;
+                    case 3:
+                        using (SqlCommand command = new SqlCommand("Select * FROM Loans;", connection))
+                        {
+                            SqlDataReader reader = command.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetInt32(1)}, {reader.GetInt32(2)}, {reader.GetDateTime(3).ToString("yyyy-MM-dd")}, {reader.GetDateTime(4).ToString("yyyy-MM-dd")}");
+                            }
+                            reader.Close();
+                        }
+                        Console.WriteLine("Enter Loan ID: ");
+                        int loanID = int.Parse(Console.ReadLine());
+                        using (SqlCommand command = new SqlCommand("Select * FROM Loans WHERE ID = @id;", connection))
+                        {
+                            command.Parameters.AddWithValue("@id", loanID);
+                            SqlDataReader reader = command.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                loanMemberID = reader.GetInt32(1);
+                                loanBookID = reader.GetInt32(2);
+                                loanDate = reader.GetDateTime(3).ToString("yyyy-MM-dd");
+                                returnDate = reader.GetDateTime(4).ToString("yyyy-MM-dd");
+                            }
+                            reader.Close();
+                        }
+                        Console.WriteLine("How many columns do you want to update?");
+                        int b = int.Parse(Console.ReadLine());
+                        Console.WriteLine("What columns do you want to update. \n1. Member ID \n2. Book ID\n3. Loan Date\n4. Return Date");
+                        for (int i = 0; i < b; i++)
+                        {
+                            int col = int.Parse(Console.ReadLine());
+                            if (column.Contains(col))
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine("Table already selected.");
+                                i--;
+                            }
+                            else
+                            {
+                                column.Add(col);
+                            }
+                        }
+                        for (int j = 0; j < column.Count; j++)
+                        {
+                            switch (column[j])
+                            {
+                                case 1:
+                                    Console.WriteLine("Enter Member ID: ");
+                                    loanMemberID = int.Parse(Console.ReadLine());
+                                    break;
+                                case 2:
+                                    Console.WriteLine("Enter Book ID: ");
+                                    loanBookID = int.Parse(Console.ReadLine());
+                                    break;
+                                case 3:
+                                    Console.WriteLine("Enter Loan Date (yyyy-MM-dd): ");
+                                    loanDate = Console.ReadLine();
+                                    if (!regex.IsMatch(loanDate))
+                                    {
+                                        Console.WriteLine("Invalid date format.");
+                                        break;
+                                    }
+                                    break;
+                                case 4:
+                                    Console.WriteLine("Enter Return Date (yyyy-MM-dd): ");
+                                    returnDate = Console.ReadLine();
+                                    if (!regex.IsMatch(returnDate))
+                                    {
+                                        Console.WriteLine("Invalid date format.");
+                                        break;
+                                    }
+                                    break;
+                            }
+                        }
+                        Loan loan = new Loan();
+                        loan.UpdateData(new Loan(loanID, loanMemberID, loanBookID, loanDate, returnDate), column);
+                        break;
+                    case 4:
+                        using (SqlCommand command = new SqlCommand("Select * FROM Author;", connection))
+                        {
+                            SqlDataReader reader = command.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");
+                            }
+                            reader.Close();
+                        }
+                        Console.WriteLine("Enter Author ID: ");
+                        int authorID = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter New Author Name: ");
+                        string authorName = Console.ReadLine();
+                        Author author = new Author();
+                        author.UpdateData(new Author(authorID, authorName), null);
+                        break;
+                    case 5:
+                        using (SqlCommand command = new SqlCommand("Select * FROM Category;", connection))
+                        {
+                            SqlDataReader reader = command.ExecuteReader();
+                            while (reader.Read())
+                            {
+                                Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");
+                            }
+                            reader.Close();
+                        }
+                        Console.WriteLine("Enter Category ID: ");
+                        int categoryID = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter New Category Name: ");
+                        string categoryName = Console.ReadLine();
+                        Category category = new Category();
+                        category.UpdateData(new Category(categoryID, categoryName), null);
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+
 
         public void ImportJSON(string filePath, string jsonProperty, string table)
         {

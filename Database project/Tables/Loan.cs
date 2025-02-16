@@ -31,7 +31,7 @@ namespace Database_project.Tables
 
         public void InsertData(Loan element)
         {
-            using (SqlCommand command = new SqlCommand("INSERT INTO Loan (memberID, bookID, loanDate, returnDate) VALUES (@memberID, @bookID, @loanDate, @returnDate);", connection))
+            using (SqlCommand command = new SqlCommand("INSERT INTO Loans (memberID, bookID, loanDate, returnDate) VALUES (@memberID, @bookID, @loanDate, @returnDate);", connection))
             {
                 command.Parameters.AddWithValue("@memberID", element.MemberID);
                 command.Parameters.AddWithValue("@bookID", element.BookID);
@@ -41,22 +41,43 @@ namespace Database_project.Tables
             }
         }
 
-        public void UpdateData(Loan element)
+        public void UpdateData(Loan element, List<int> column)
         {
-            using (SqlCommand command = new SqlCommand("UPDATE Loan SET memberID = @memberID, bookID = @bookID, loanDate = @loanDate, returnDate = @returnDate WHERE ID = @id;", connection))
+            string query = "UPDATE Loans SET ";
+            for (int i = 0; i < column.Count; i++)
             {
+                switch (column[i])
+                {
+                    case 1: 
+                        query += "memberID = @memberID"; 
+                        break;
+                    case 2: 
+                        query += "bookID = @bookID"; 
+                        break;
+                    case 3: 
+                        query += "loanDate = @loanDate"; 
+                        break;
+                    case 4: 
+                        query += "returnDate = @returnDate"; 
+                        break;
+                }
+                if (i < column.Count - 1) query += ", ";
+            }
+            query += " WHERE ID = @id;";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id", element.ID);
                 command.Parameters.AddWithValue("@memberID", element.MemberID);
                 command.Parameters.AddWithValue("@bookID", element.BookID);
                 command.Parameters.AddWithValue("@loanDate", element.LoanDate);
                 command.Parameters.AddWithValue("@returnDate", element.ReturnDate);
-                command.Parameters.AddWithValue("@id", element.ID);
                 command.ExecuteNonQuery();
             }
         }
 
         public void DeleteData(Loan element)
         {
-            using (SqlCommand command = new SqlCommand("DELETE FROM Loan WHERE ID = @id;", connection))
+            using (SqlCommand command = new SqlCommand("DELETE FROM Loans WHERE ID = @id;", connection))
             {
                 command.Parameters.AddWithValue("@id", element.ID);
                 command.ExecuteNonQuery();

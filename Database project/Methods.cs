@@ -9,7 +9,7 @@ namespace Database_project
     interface Methods<T>
     {
         void InsertData(T element);
-        void UpdateData(T element);
+        void UpdateData(T element, List<int> column);
         void DeleteData(T element);
     }
 }

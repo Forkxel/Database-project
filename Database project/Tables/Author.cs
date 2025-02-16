@@ -32,7 +32,7 @@ namespace Database_project.Tables
             }
         }
 
-        public void UpdateData(Author element)
+        public void UpdateData(Author element, List<int> column)
         {
             using (SqlCommand command = new SqlCommand("UPDATE Author SET name = @name WHERE ID = @id;", connection))
             {

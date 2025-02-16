@@ -7,6 +7,7 @@
             DatabaseInteraction db = new DatabaseInteraction();
 
             //db.ImportJSON("author.json", "name", "Author");
+            //db.ImportJSON("categories.json", "categories", "Category");
 
             //db.CreateTables();
 
