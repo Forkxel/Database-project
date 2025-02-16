@@ -11,91 +11,75 @@
 
             //db.CreateTables();
 
-            Console.WriteLine("Do you want to insert, delete or update data?");
-            string action = Console.ReadLine();
-            if (action == "insert")
+            bool run = true;
+            while (run)
             {
-                Console.WriteLine("Do you want to insert data into multiple tables? (y/n)");
-                string answer = Console.ReadLine();
-                List<int> tables = new List<int>();
-                Console.WriteLine();
-
-                if (answer == "y")
+                try
                 {
-                    Console.WriteLine("How many tables 1-5");
-                    int count = int.Parse(Console.ReadLine());
-                    if (count < 1 || count > 5)
+                    Console.WriteLine("Do you want to insert, delete or update data?\nIf you want to exit the program write exit.");
+                    Console.WriteLine();
+                    string action = Console.ReadLine();
+                    if (action == "insert")
                     {
-                        Console.WriteLine("Invalid input.");
-                    }
-                    else
-                    {
-                        for (int i = 0; i < count; i++)
+                        Console.WriteLine("Write a number of table you want to insert into.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
+                        int table = int.Parse(Console.ReadLine());
+                        if (table < 1 || table > 5)
                         {
+                            Console.WriteLine("Invalid input.");
                             Console.WriteLine();
-                            Console.WriteLine("Write a number of table you want to insert into.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
-                            int table = int.Parse(Console.ReadLine());
-                            if (tables.Contains(table))
-                            {
-                                Console.WriteLine();
-                                Console.WriteLine("Table already selected.");
-                                i--;
-                            }
-                            else
-                            {
-                                tables.Add(table);
-                            }
+                            break;
+                        }
+                        else
+                        {
+                            db.InsertData(table);
                         }
                     }
-                }
-                else if (answer == "n")
-                {
-                    Console.WriteLine("Write a number of table you want to insert into.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
-                    int table = int.Parse(Console.ReadLine());
-                    if (table < 1 || table > 5)
+
+                    else if (action == "delete")
                     {
-                        Console.WriteLine("Invalid input.");
+                        Console.WriteLine("Write a number of table you want to delete from.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
+                        int table = int.Parse(Console.ReadLine());
+                        if (table < 1 || table > 5)
+                        {
+                            Console.WriteLine("Invalid input.");
+                            Console.WriteLine();
+                            break;
+                        }
+                        else
+                        {
+                            db.DeleteData(table);
+                        }
+                    }
+                    else if (action == "update")
+                    {
+                        Console.WriteLine("Write a number of table you want to update.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
+                        int table = int.Parse(Console.ReadLine());
+                        if (table < 1 || table > 5)
+                        {
+                            Console.WriteLine("Invalid input.");
+                            Console.WriteLine();
+                            break;
+                        }
+                        else
+                        {
+                            db.UpdateData(table);
+                        }
+                    }
+                    else if (action == "exit")
+                    {
+                        run = false;
                     }
                     else
                     {
-                        db.InsertData(table);
+                        Console.WriteLine("Invalid input. Write insert, delete or update");
+                        Console.WriteLine();
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                    Console.WriteLine("Invalid input.");
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine();
                 }
-            }
-       
-            else if (action == "delete")
-            {
-                Console.WriteLine("Write a number of table you want to delete from.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
-                int table = int.Parse(Console.ReadLine());
-                if (table < 1 || table > 5)
-                {
-                    Console.WriteLine("Invalid input.");
-                }
-                else
-                {
-                    db.DeleteData(table);
-                }
-            }
-            else if (action == "update")
-            {
-                Console.WriteLine("Write a number of table you want to update.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
-                int table = int.Parse(Console.ReadLine());
-                if (table < 1 || table > 5)
-                {
-                    Console.WriteLine("Invalid input.");
-                }
-                else
-                {
-                    db.UpdateData(table);
-                }
-            }
-            else
-            {
-                Console.WriteLine("Invalid input.");
             }
         }  
     }
