@@ -1,0 +1,21 @@
+{
+    "author" : [
+        {
+            "firstName" : "James",
+            "lastName" : "Joyce"
+        },
+        {
+            "firstName" : "Franz",
+            "lastName" : "Kafka"
+        }
+    ],
+
+    "category" : [
+        {
+            "name" : "Fantasy"
+        },
+        {
+            "name" : "Comics"
+        }
+    ]
+}

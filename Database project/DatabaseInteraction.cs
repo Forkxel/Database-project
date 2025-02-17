@@ -555,14 +555,14 @@ namespace Database_project
             var authorJson = JsonConvert.DeserializeObject<Dictionary<string, List<Author>>>(File.ReadAllText("import.json"));
             var authors = authorJson["author"];
             
-            var categoryJson = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText("import.json"));
+            var categoryJson = JsonConvert.DeserializeObject<Dictionary<string, List<Category>>>(File.ReadAllText("import.json"));
             var categories = categoryJson["category"];
             
             foreach (var item in authors)
             {
                 using (SqlCommand command = new SqlCommand($"INSERT INTO Author(firstName, lastName) VALUES (@firstName, @lastName);", connection))
                 {
-                    command.Parameters.AddWithValue("@firsName", item.FirstName);
+                    command.Parameters.AddWithValue("@firstName", item.FirstName);
                     command.Parameters.AddWithValue("@lastName", item.LastName);
                     command.ExecuteNonQuery();
                 }
@@ -572,7 +572,7 @@ namespace Database_project
             {
                 using (SqlCommand command = new SqlCommand($"INSERT INTO Category(name) VALUES (@name);", connection))
                 {
-                    command.Parameters.AddWithValue("@name", item);
+                    command.Parameters.AddWithValue("@name", item.Name);
                     command.ExecuteNonQuery();
                 }
             }

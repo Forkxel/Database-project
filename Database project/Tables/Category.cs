@@ -11,6 +11,8 @@ namespace Database_project.Tables
     public class Category : IMethods<Category>
     {
         public int ID { get; set; }
+        
+        [JsonProperty("name")]
         public string Name { get; set; }
         private SqlConnection connection = DatabaseConnection.GetInstance();
 
