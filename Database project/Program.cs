@@ -6,14 +6,13 @@
         {
             DatabaseInteraction db = new DatabaseInteraction();
             Import import = new Import();
-
-            db.CreateTables();
-
+            
             bool run = true;
             while (run)
             {
                 try
                 {
+                    db.CreateTables();
                     Console.WriteLine("Do you want to insert, delete or update data?\nIf you want to import data from JSON type import.\nIf you want to clear database type clear.\nIf you want to exit the program type exit.");
                     Console.WriteLine();
                     string action = Console.ReadLine().ToLower();
@@ -28,8 +27,6 @@
                             break;
                         }
                         db.InsertData(table);
-                        Console.WriteLine("Table inserted");
-                        Console.WriteLine();
                     }
 
                     else if (action == "delete")
@@ -43,8 +40,6 @@
                             break;
                         }
                         db.DeleteData(table);
-                        Console.WriteLine("Table deleted");
-                        Console.WriteLine();
                     }
                     else if (action == "update")
                     {
@@ -57,8 +52,6 @@
                             break;
                         }
                         db.UpdateData(table);
-                        Console.WriteLine("Table updated");
-                        Console.WriteLine();
                     }
                     else if (action == "exit")
                     {
@@ -66,7 +59,7 @@
                     }
                     else if (action == "import")
                     {
-                        Console.WriteLine("To import data from Json open directory \\Database project\\Database project\\bin\\Debug\\net8.0 " +
+                        Console.WriteLine("To import data from Json open directory \\Your directory in which is this application\\Database project\\bin\\Debug\\net8.0 " +
                                           "\nIn this directory you will find file named import.json " +
                                           "\nOpen this file and add custom names for Author and Category tables. " +
                                           "\nSave this file and restart the program. \nChoose import again and write ready to the Console.");
@@ -93,8 +86,8 @@
                         if (answer == "clear")
                         {
                             db.DropTables();
-                            Console.WriteLine("Database cleared.\nProgram will exit.");
-                            Environment.Exit(0);
+                            Console.WriteLine("Database cleared.");
+                            Console.WriteLine();
                         }
                         else
                         {
