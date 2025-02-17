@@ -55,10 +55,11 @@ Console based application for managing simple library database.
 First thing you will have to do after running application is to choose if you want to:
 1. Insert data
 2. Delete data
-3. Update data
-4. Import data from Json file
-5. Clear the database 
-6. Exit application
+3. Print data
+4. Update data
+5. Import data from Json file
+6. Clear the database 
+7. Exit application
  
 #### 1. Insert data
 
@@ -70,13 +71,17 @@ After you have chosen your table the application will want from you to write dat
 If you chose to delete data you will have to choose from what table you want to delete. 
 Then the application will print all rows in the selected table and you will need to select ID of row you will want to delete.
 
-#### 3. Update Data
+#### 3. Print data
+
+Application will print all tables to the console.
+
+#### 4. Update Data
 
 If you chose to update data you will have to choose what table you want to update.
 After that you will have to choose how many columns from the table you have selected you want to update.
 And finally you will be asked to write new data to selected columns.
 
-#### 4. Import data from Json file
+#### 5. Import data from Json file
 
 To import data you will need to find directory where is this application.
 In this directory open \Database project\bin\Debug\net8.0 and find and open file named import.json.
@@ -125,12 +130,12 @@ For category do exactly the same just with "name"
 
 Don't change "firstName", "lastName" in author and "name" in category!!!
 
-#### 5. Clear database
+#### 6. Clear database
 
 After you typed clear you will be asked second time if you are really sure you want to clear your database.
 Now the database will clear all tables.
 
-#### 6. Exit application
+#### 7. Exit application
 
 I hope I don't have to explain this :).
 
