@@ -18,18 +18,15 @@ public class Import
     {
         try
         {
-            var authorJson =
-                JsonConvert.DeserializeObject<Dictionary<string, List<Author>>>(File.ReadAllText("import.json"));
+            var authorJson = JsonConvert.DeserializeObject<Dictionary<string, List<Author>>>(File.ReadAllText("import.json"));
             var authors = authorJson["author"];
 
-            var categoryJson =
-                JsonConvert.DeserializeObject<Dictionary<string, List<Category>>>(File.ReadAllText("import.json"));
+            var categoryJson = JsonConvert.DeserializeObject<Dictionary<string, List<Category>>>(File.ReadAllText("import.json"));
             var categories = categoryJson["category"];
 
             foreach (var item in authors)
             {
-                using (SqlCommand command =
-                       new SqlCommand($"INSERT INTO Author(firstName, lastName) VALUES (@firstName, @lastName);",
+                using (SqlCommand command = new SqlCommand($"INSERT INTO Author(firstName, lastName) VALUES (@firstName, @lastName);",
                            connection))
                 {
                     command.Parameters.AddWithValue("@firstName", item.FirstName);
