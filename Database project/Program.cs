@@ -5,6 +5,7 @@
         static void Main(string[] args)
         {
             DatabaseInteraction db = new DatabaseInteraction();
+            Import import = new Import();
 
             db.CreateTables();
 
@@ -27,6 +28,8 @@
                             break;
                         }
                         db.InsertData(table);
+                        Console.WriteLine("Table inserted");
+                        Console.WriteLine();
                     }
 
                     else if (action == "delete")
@@ -40,6 +43,8 @@
                             break;
                         }
                         db.DeleteData(table);
+                        Console.WriteLine("Table deleted");
+                        Console.WriteLine();
                     }
                     else if (action == "update")
                     {
@@ -52,6 +57,8 @@
                             break;
                         }
                         db.UpdateData(table);
+                        Console.WriteLine("Table updated");
+                        Console.WriteLine();
                     }
                     else if (action == "exit")
                     {
@@ -68,7 +75,7 @@
                         string answear = Console.ReadLine().ToLower();
                         if (answear.Equals("y"))
                         {
-                            db.ImportJson();
+                            import.ImportJson();
                             Console.WriteLine("Import complete.");
                             Console.WriteLine();
                         }

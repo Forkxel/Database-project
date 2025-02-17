@@ -14,7 +14,7 @@ namespace Database_project
     public class DatabaseInteraction
     {
         private SqlConnection connection = DatabaseConnection.GetInstance();
-        private Regex regex = new Regex("^(\\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\\d|3[0-1])$");
+        private Regex regex = new("^(\\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\\d|3[0-1])$");
         private Book book = new();
         private Author author = new();
         private Category category = new();
@@ -25,7 +25,7 @@ namespace Database_project
         {
             try
             {
-                using (SqlCommand command = new SqlCommand("CREATE TABLE Members (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, firstName VARCHAR(20) NOT NULL, lastName VARCHAR(20) NOT NULL , email VARCHAR(50) NOT NULL, membershipDate datetime NOT NULL);", connection))
+                using (SqlCommand command = new SqlCommand("CREATE TABLE Members (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, firstName VARCHAR(20) NOT NULL, lastName VARCHAR(20) NOT NULL , email VARCHAR(50) NOT NULL);", connection))
                 {
                     command.ExecuteNonQuery();
                 }
@@ -52,21 +52,31 @@ namespace Database_project
 
             try
             {
-                using (SqlCommand command = new SqlCommand("CREATE TABLE Books (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, title VARCHAR(50) NOT NULL, authorId INT FOREIGN KEY REFERENCES Author(id) NOT NULL, categoryId INT FOREIGN KEY REFERENCES Category(id) NOT NULL, price float NOT NULL, isAvailable bit NOT NULL);", connection))
+                using (SqlCommand command = new SqlCommand(
+                           "CREATE TABLE Books (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, title VARCHAR(50) NOT NULL, authorId INT FOREIGN KEY REFERENCES Author(id) ON DELETE CASCADE, categoryId INT FOREIGN KEY REFERENCES Category(id) ON DELETE CASCADE, price float NOT NULL, isAvailable bit NOT NULL);",
+                           connection))
                 {
                     command.ExecuteNonQuery();
                 }
             }
-            catch (Exception e){}
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             try
             {
-                using (SqlCommand command = new SqlCommand("CREATE TABLE Loans (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, memberId INT FOREIGN KEY REFERENCES Members(id) NOT NULL, bookId INT FOREIGN KEY REFERENCES Books(id) NOT NULL, loanDate datetime NOT NULL, returnDate datetime);", connection))
+                using (SqlCommand command = new SqlCommand(
+                           "CREATE TABLE Loans (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, memberId INT FOREIGN KEY REFERENCES Members(id) ON DELETE CASCADE, bookId INT FOREIGN KEY REFERENCES Books(id) ON DELETE CASCADE, loanDate datetime NOT NULL, returnDate datetime);",
+                           connection))
                 {
                     command.ExecuteNonQuery();
                 }
             }
-            catch (Exception e) {}
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         public void InsertData(int table)
@@ -86,17 +96,7 @@ namespace Database_project
                         Console.WriteLine("Enter member e-mail: ");
                         string memberEmail = Console.ReadLine();
                         Console.WriteLine();
-                        Console.WriteLine("Enter membership date (yyyy-mm-dd): ");
-                        string membershipDate = Console.ReadLine();
-                        Console.WriteLine();
-                        if (!regex.IsMatch(membershipDate))
-                        {
-                            Console.WriteLine("Invalid date format.");
-                        }
-                        else
-                        {
-                            member.InsertData(new Member(0, memberName, memberEmail, membershipDate, memberLastName));
-                        }
+                        member.InsertData(new Member(0, memberName, memberEmail, memberLastName));
                         break;
                     case 2:
                         Console.WriteLine();
@@ -186,7 +186,7 @@ namespace Database_project
                         Console.WriteLine("Enter member ID: ");
                         int memberID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        member.DeleteData(new Member(memberID, "", "", "", ""));
+                        member.DeleteData(new Member(memberID, "", "", ""));
                         break;
                     case 2:
                         Console.WriteLine();
@@ -236,7 +236,6 @@ namespace Database_project
                 string memberName = "";
                 string memberLastName = "";
                 string memberEmail = "";
-                string membershipDate = "";
                 string bookTitle = "";
                 int bookAuthorID = 0;
                 int bookCategoryID = 0;
@@ -265,19 +264,22 @@ namespace Database_project
                                 memberName = reader.GetString(1);
                                 memberLastName = reader.GetString(2);
                                 memberEmail = reader.GetString(3);
-                                membershipDate = reader.GetDateTime(4).ToString("yyyy-mm-dd");
                             }
                             reader.Close();
-                            Console.WriteLine();
                         }
                         Console.WriteLine("How many columns do you want to update?");
                         int count = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Console.WriteLine("What columns do you want to update. \n1. First Name \n2. Last Name \n3. E-mail\n4. Membership date");
+                        Console.WriteLine("What columns do you want to update. \n1. First Name \n2. Last Name \n3. E-mail");
                         for (int i = 0; i < count; i++)
                         {
                             int col = int.Parse(Console.ReadLine());
-                            if (column.Contains(col))
+                            if (col < 1 || col > 3)
+                            {
+                                Console.WriteLine("Invalid column.");
+                                i--;
+                            }
+                            else if (column.Contains(col))
                             {
                                 Console.WriteLine();
                                 Console.WriteLine("Table already selected.");
@@ -311,20 +313,9 @@ namespace Database_project
                                     memberEmail = Console.ReadLine();
                                     Console.WriteLine();
                                     break;
-                                case 4:
-                                    Console.WriteLine();
-                                    Console.WriteLine("Enter membership date (yyyy-mm-dd): ");
-                                    membershipDate = Console.ReadLine();
-                                    Console.WriteLine();
-                                    if (!regex.IsMatch(membershipDate))
-                                    {
-                                        Console.WriteLine("Invalid date format.");
-                                        Console.WriteLine();
-                                    }
-                                    break;
                             }
                         }
-                        member.UpdateData(new Member(memberID, memberName, memberEmail, membershipDate, memberLastName), column);
+                        member.UpdateData(new Member(memberID, memberName, memberEmail, memberLastName), column);
                         break;
                     case 2:
                         Console.WriteLine();
@@ -353,7 +344,12 @@ namespace Database_project
                         for (int i = 0; i < a; i++)
                         {
                             int col = int.Parse(Console.ReadLine());
-                            if (column.Contains(col))
+                            if (col < 1 || col > 5)
+                            {
+                                Console.WriteLine("Invalid column.");
+                                i--;
+                            }
+                            else if (column.Contains(col))
                             {
                                 Console.WriteLine();
                                 Console.WriteLine("Table already selected.");
@@ -431,7 +427,12 @@ namespace Database_project
                         for (int i = 0; i < b; i++)
                         {
                             int col = int.Parse(Console.ReadLine());
-                            if (column.Contains(col))
+                            if (col < 1 || col > 4)
+                            {
+                                Console.WriteLine("Invalid column.");
+                                i--;
+                            }
+                            else if (column.Contains(col))
                             {
                                 Console.WriteLine();
                                 Console.WriteLine("Table already selected.");
@@ -499,7 +500,12 @@ namespace Database_project
                         for (int i = 0; i < c; i++)
                         {
                             int col = int.Parse(Console.ReadLine());
-                            if (column.Contains(col))
+                            if (col < 1 || col > 2)
+                            {
+                                Console.WriteLine("Invalid column.");
+                                i--;
+                            }
+                            else if (column.Contains(col))
                             {
                                 Console.WriteLine();
                                 Console.WriteLine("Table already selected.");
@@ -547,34 +553,6 @@ namespace Database_project
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }
-        }
-
-        public void ImportJson()
-        {
-            var authorJson = JsonConvert.DeserializeObject<Dictionary<string, List<Author>>>(File.ReadAllText("import.json"));
-            var authors = authorJson["author"];
-            
-            var categoryJson = JsonConvert.DeserializeObject<Dictionary<string, List<Category>>>(File.ReadAllText("import.json"));
-            var categories = categoryJson["category"];
-            
-            foreach (var item in authors)
-            {
-                using (SqlCommand command = new SqlCommand($"INSERT INTO Author(firstName, lastName) VALUES (@firstName, @lastName);", connection))
-                {
-                    command.Parameters.AddWithValue("@firstName", item.FirstName);
-                    command.Parameters.AddWithValue("@lastName", item.LastName);
-                    command.ExecuteNonQuery();
-                }
-            }
-
-            foreach (var item in categories)
-            {
-                using (SqlCommand command = new SqlCommand($"INSERT INTO Category(name) VALUES (@name);", connection))
-                {
-                    command.Parameters.AddWithValue("@name", item.Name);
-                    command.ExecuteNonQuery();
-                }
             }
         }
     }
