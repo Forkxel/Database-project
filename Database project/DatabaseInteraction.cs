@@ -615,5 +615,24 @@ namespace Database_project
                 Console.WriteLine(e.Message);
             }
         }
+
+        public void PrintAll()
+        {
+            Console.WriteLine("Members: ");
+            member.WriteAll();
+            Console.WriteLine();
+            Console.WriteLine("Books: ");
+            book.WriteAll();
+            Console.WriteLine();
+            Console.WriteLine("Loans: ");
+            loan.WriteAll();
+            Console.WriteLine();
+            Console.WriteLine("Authors: ");
+            author.WriteAll();
+            Console.WriteLine();
+            Console.WriteLine("Categories: ");
+            category.WriteAll();
+            Console.WriteLine();
+        }
     }
 }

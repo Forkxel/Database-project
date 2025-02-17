@@ -13,7 +13,7 @@
                 try
                 {
                     db.CreateTables();
-                    Console.WriteLine("Do you want to insert, delete or update data?\nIf you want to import data from JSON type import.\nIf you want to clear database type clear.\nIf you want to exit the program type exit.");
+                    Console.WriteLine("Do you want to insert, delete, print or update data?\nIf you want to import data from JSON type import.\nIf you want to clear database type clear.\nIf you want to exit the program type exit.");
                     Console.WriteLine();
                     string action = Console.ReadLine().ToLower();
                     if (action == "insert")
@@ -94,6 +94,10 @@
                             Console.WriteLine("Clearing database terminated.");
                             Console.WriteLine();
                         }
+                    }
+                    else if (action == "print")
+                    {
+                        db.PrintAll();
                     }
                     else
                     {
