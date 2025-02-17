@@ -53,30 +53,69 @@ namespace Database_project
             try
             {
                 using (SqlCommand command = new SqlCommand(
-                           "CREATE TABLE Books (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, title VARCHAR(50) NOT NULL, authorId INT FOREIGN KEY REFERENCES Author(id) ON DELETE CASCADE, categoryId INT FOREIGN KEY REFERENCES Category(id) ON DELETE CASCADE, price float NOT NULL, isAvailable bit NOT NULL);",
-                           connection))
+                           "CREATE TABLE Books (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, title VARCHAR(50) NOT NULL, authorId INT FOREIGN KEY REFERENCES Author(id) ON DELETE CASCADE, categoryId INT FOREIGN KEY REFERENCES Category(id) ON DELETE CASCADE, price float NOT NULL, isAvailable bit NOT NULL);", connection))
                 {
                     command.ExecuteNonQuery();
                 }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            catch (Exception e) {}
 
             try
             {
-                using (SqlCommand command = new SqlCommand(
-                           "CREATE TABLE Loans (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, memberId INT FOREIGN KEY REFERENCES Members(id) ON DELETE CASCADE, bookId INT FOREIGN KEY REFERENCES Books(id) ON DELETE CASCADE, loanDate datetime NOT NULL, returnDate datetime);",
-                           connection))
+                using (SqlCommand command = new SqlCommand("CREATE TABLE Loans (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, memberId INT FOREIGN KEY REFERENCES Members(id) ON DELETE CASCADE, bookId INT FOREIGN KEY REFERENCES Books(id) ON DELETE CASCADE, loanDate datetime NOT NULL, returnDate datetime);", connection))
                 {
                     command.ExecuteNonQuery();
                 }
             }
-            catch (Exception e)
+            catch (Exception e) {}
+        }
+
+        public void DropTables()
+        {
+            try
             {
-                Console.WriteLine(e.Message);
+                using (SqlCommand command = new SqlCommand("DROP TABLE Loans;", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
             }
+            catch (Exception e) {}
+            
+            try
+            {
+                using (SqlCommand command = new SqlCommand("DROP TABLE Books;", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e) {}
+            
+            try
+            {
+                using (SqlCommand command = new SqlCommand("DROP TABLE Members;", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e) {}
+
+            try
+            {
+                using (SqlCommand command = new SqlCommand("DROP TABLE Author;", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e) {}
+
+            try
+            {
+                using (SqlCommand command = new SqlCommand("DROP TABLE Category;", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e) {}
         }
 
         public void InsertData(int table)

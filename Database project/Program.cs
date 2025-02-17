@@ -14,9 +14,9 @@
             {
                 try
                 {
-                    Console.WriteLine("Do you want to insert, delete or update data?\nIf you want to import data from JSON type import.\nIf you want to exit the program type exit.");
+                    Console.WriteLine("Do you want to insert, delete or update data?\nIf you want to import data from JSON type import.\nIf you want to clear database type clear.\nIf you want to exit the program type exit.");
                     Console.WriteLine();
-                    string action = Console.ReadLine();
+                    string action = Console.ReadLine().ToLower();
                     if (action == "insert")
                     {
                         Console.WriteLine("Write a number of the table you want to insert into.\n1. Member\n2. Book\n3. Loan\n4. Author\n5. Category");
@@ -69,11 +69,11 @@
                         Console.WriteLine("To import data from Json open directory \\Database project\\Database project\\bin\\Debug\\net8.0 " +
                                           "\nIn this directory you will find file named import.json " +
                                           "\nOpen this file and add custom names for Author and Category tables. " +
-                                          "\nSave this file and restart the program. \nChoose import again and write y to the Console.");
+                                          "\nSave this file and restart the program. \nChoose import again and write ready to the Console.");
                         Console.WriteLine();
                         
                         string answear = Console.ReadLine().ToLower();
-                        if (answear.Equals("y"))
+                        if (answear.Equals("ready"))
                         {
                             import.ImportJson();
                             Console.WriteLine("Import complete.");
@@ -82,6 +82,23 @@
                         else
                         {
                             Console.WriteLine("Invalid input.");
+                            Console.WriteLine();
+                        }
+                    }
+                    else if (action == "clear")
+                    {
+                        Console.WriteLine("Are you sure you want to clear the database?\nType again clear.");
+                        Console.WriteLine();
+                        string answer = Console.ReadLine().ToLower();
+                        if (answer == "clear")
+                        {
+                            db.DropTables();
+                            Console.WriteLine("Database cleared");
+                            Console.WriteLine();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Clearing database terminated.");
                             Console.WriteLine();
                         }
                     }
