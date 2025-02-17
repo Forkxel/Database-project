@@ -25,7 +25,7 @@ namespace Database_project
         {
             try
             {
-                using (SqlCommand command = new SqlCommand("CREATE TABLE Members (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, name VARCHAR(20) NOT NULL, email VARCHAR(50) NOT NULL, membershipDate datetime NOT NULL);", connection))
+                using (SqlCommand command = new SqlCommand("CREATE TABLE Members (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, firstName VARCHAR(20) NOT NULL, lastName VARCHAR(20) NOT NULL , email VARCHAR(50) NOT NULL, membershipDate datetime NOT NULL);", connection))
                 {
                     command.ExecuteNonQuery();
                 }
@@ -34,7 +34,7 @@ namespace Database_project
 
             try
             {
-                using (SqlCommand command = new SqlCommand("CREATE TABLE Author (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, name VARCHAR(20) NOT NULL);", connection))
+                using (SqlCommand command = new SqlCommand("CREATE TABLE Author (id INT PRIMARY KEY IDENTITY(1,1) NOT NULL, firstName VARCHAR(20) NOT NULL, lastName VARCHAR(20) NOT NULL);", connection))
                 {
                     command.ExecuteNonQuery();
                 }
@@ -77,8 +77,11 @@ namespace Database_project
                 {
                     case 1:
                         Console.WriteLine();
-                        Console.WriteLine("Enter member name: ");
+                        Console.WriteLine("Enter member first name: ");
                         string memberName = Console.ReadLine();
+                        Console.WriteLine();
+                        Console.WriteLine("Enter member last name: ");
+                        string memberLastName = Console.ReadLine();
                         Console.WriteLine();
                         Console.WriteLine("Enter member e-mail: ");
                         string memberEmail = Console.ReadLine();
@@ -92,7 +95,7 @@ namespace Database_project
                         }
                         else
                         {
-                            member.InsertData(new Member(0, memberName, memberEmail, membershipDate));
+                            member.InsertData(new Member(0, memberName, memberEmail, membershipDate, memberLastName));
                         }
                         break;
                     case 2:
@@ -148,10 +151,13 @@ namespace Database_project
                         break;
                     case 4:
                         Console.WriteLine();
-                        Console.WriteLine("Enter author Name: ");
+                        Console.WriteLine("Enter author first name: ");
                         string authorName = Console.ReadLine();
                         Console.WriteLine();
-                        author.InsertData(new Author(0, authorName));
+                        Console.WriteLine("Enter author last name: ");
+                        string authorLastName = Console.ReadLine();
+                        Console.WriteLine();
+                        author.InsertData(new Author(0, authorName, authorLastName));
                         break;
                     case 5:
                         Console.WriteLine();
@@ -180,7 +186,7 @@ namespace Database_project
                         Console.WriteLine("Enter member ID: ");
                         int memberID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        member.DeleteData(new Member(memberID, "", "", ""));
+                        member.DeleteData(new Member(memberID, "", "", "", ""));
                         break;
                     case 2:
                         Console.WriteLine();
@@ -204,7 +210,7 @@ namespace Database_project
                         Console.WriteLine("Enter author ID: ");
                         int authorID = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        author.DeleteData(new Author(authorID, ""));
+                        author.DeleteData(new Author(authorID, "", ""));
                         break;
                     case 5:
                         Console.WriteLine();
@@ -228,6 +234,7 @@ namespace Database_project
             {
                 List<int> column = new List<int>();
                 string memberName = "";
+                string memberLastName = "";
                 string memberEmail = "";
                 string membershipDate = "";
                 string bookTitle = "";
@@ -239,6 +246,8 @@ namespace Database_project
                 int loanBookID = 0;
                 string loanDate = "";
                 string returnDate = "";
+                string authorName = "";
+                string authorLastName = "";
                 switch (table)
                 {
                     case 1:
@@ -254,8 +263,9 @@ namespace Database_project
                             while (reader.Read())
                             {
                                 memberName = reader.GetString(1);
-                                memberEmail = reader.GetString(2);
-                                membershipDate = reader.GetDateTime(3).ToString("yyyy-mm-dd");
+                                memberLastName = reader.GetString(2);
+                                memberEmail = reader.GetString(3);
+                                membershipDate = reader.GetDateTime(4).ToString("yyyy-mm-dd");
                             }
                             reader.Close();
                             Console.WriteLine();
@@ -263,7 +273,7 @@ namespace Database_project
                         Console.WriteLine("How many columns do you want to update?");
                         int count = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Console.WriteLine("What columns do you want to update. \n1. Name \n2. E-mail\n3. Membership date");
+                        Console.WriteLine("What columns do you want to update. \n1. First Name \n2. Last Name \n3. E-mail\n4. Membership date");
                         for (int i = 0; i < count; i++)
                         {
                             int col = int.Parse(Console.ReadLine());
@@ -285,17 +295,23 @@ namespace Database_project
                             {
                                 case 1:
                                     Console.WriteLine();
-                                    Console.WriteLine("Enter member name: ");
+                                    Console.WriteLine("Enter member first name: ");
                                     memberName = Console.ReadLine();
                                     Console.WriteLine();
                                     break;
                                 case 2:
                                     Console.WriteLine();
+                                    Console.WriteLine("Enter member last name: ");
+                                    memberLastName = Console.ReadLine();
+                                    Console.WriteLine();
+                                    break;
+                                case 3:
+                                    Console.WriteLine();
                                     Console.WriteLine("Enter member email: ");
                                     memberEmail = Console.ReadLine();
                                     Console.WriteLine();
                                     break;
-                                case 3:
+                                case 4:
                                     Console.WriteLine();
                                     Console.WriteLine("Enter membership date (yyyy-mm-dd): ");
                                     membershipDate = Console.ReadLine();
@@ -308,7 +324,7 @@ namespace Database_project
                                     break;
                             }
                         }
-                        member.UpdateData(new Member(memberID, memberName, memberEmail, membershipDate), column);
+                        member.UpdateData(new Member(memberID, memberName, memberEmail, membershipDate, memberLastName), column);
                         break;
                     case 2:
                         Console.WriteLine();
@@ -476,11 +492,44 @@ namespace Database_project
                         author.WriteAll();
                         Console.WriteLine("Enter author ID: ");
                         int authorID = int.Parse(Console.ReadLine());
+                        Console.WriteLine("How many columns do you want to update?");
+                        int c = int.Parse(Console.ReadLine());
                         Console.WriteLine();
-                        Console.WriteLine("Enter new author full name: ");
-                        string authorName = Console.ReadLine();
+                        Console.WriteLine("What columns do you want to update? \n1. First Name \n2. Last Name");
+                        for (int i = 0; i < c; i++)
+                        {
+                            int col = int.Parse(Console.ReadLine());
+                            if (column.Contains(col))
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine("Table already selected.");
+                                i--;
+                            }
+                            else
+                            {
+                                column.Add(col);
+                            }
+                        }
                         Console.WriteLine();
-                        author.UpdateData(new Author(authorID, authorName), null);
+                        for (int j = 0; j < column.Count; j++)
+                        {
+                            switch (column[j])
+                            {
+                                case 1:
+                                    Console.WriteLine();
+                                    Console.WriteLine("Enter author's first name: ");
+                                    authorName = Console.ReadLine();
+                                    Console.WriteLine();
+                                    break;
+                                case 2:
+                                    Console.WriteLine();
+                                    Console.WriteLine("Enter author's last name: ");
+                                    authorLastName = Console.ReadLine();
+                                    Console.WriteLine();
+                                    break;
+                            }
+                        }
+                        author.UpdateData(new Author(authorID, authorName, authorLastName), null);
                         break;
                     case 5:
                         Console.WriteLine();
@@ -501,19 +550,20 @@ namespace Database_project
             }
         }
 
-        public void ImportJSON()
+        public void ImportJson()
         {
-            var authorJSON = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText("import.json"));
-            var authors = authorJSON["author"];
+            var authorJson = JsonConvert.DeserializeObject<Dictionary<string, List<Author>>>(File.ReadAllText("import.json"));
+            var authors = authorJson["author"];
             
-            var categoryJSON = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText("import.json"));
-            var categories = categoryJSON["category"];
+            var categoryJson = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(File.ReadAllText("import.json"));
+            var categories = categoryJson["category"];
             
             foreach (var item in authors)
             {
-                using (SqlCommand command = new SqlCommand($"INSERT INTO Author(name) VALUES (@name);", connection))
+                using (SqlCommand command = new SqlCommand($"INSERT INTO Author(firstName, lastName) VALUES (@firstName, @lastName);", connection))
                 {
-                    command.Parameters.AddWithValue("@name", item);
+                    command.Parameters.AddWithValue("@firsName", item.FirstName);
+                    command.Parameters.AddWithValue("@lastName", item.LastName);
                     command.ExecuteNonQuery();
                 }
             }

@@ -59,7 +59,7 @@
                     }
                     else if (action == "import")
                     {
-                        Console.WriteLine("To import data from JSON open directory \\Database project\\Database project\\bin\\Debug\\net8.0 " +
+                        Console.WriteLine("To import data from Json open directory \\Database project\\Database project\\bin\\Debug\\net8.0 " +
                                           "\nIn this directory you will find file named import.json " +
                                           "\nOpen this file and add custom names for Author and Category tables. " +
                                           "\nSave this file and restart the program. \nChoose import again and write y to the Console.");
@@ -68,7 +68,7 @@
                         string answear = Console.ReadLine().ToLower();
                         if (answear.Equals("y"))
                         {
-                            db.ImportJSON();
+                            db.ImportJson();
                             Console.WriteLine("Import complete.");
                             Console.WriteLine();
                         }

@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Database_project.Tables
 {
@@ -11,30 +12,53 @@ namespace Database_project.Tables
     {
         private SqlConnection connection = DatabaseConnection.GetInstance();
         public int ID { get; set; }
-        public string Name { get; set; }
+        
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+        
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
 
-        public Author(int id, string name)
+        public Author(int id, string firstName, string lastName)
         {
             ID = id;
-            Name = name;
+            FirstName = firstName;
+            LastName = lastName;
         }
 
         public Author() {}
 
         public void InsertData(Author element)
         {
-            using (SqlCommand command = new SqlCommand("INSERT INTO Author(name) VALUES (@name);", connection))
+            using (SqlCommand command = new SqlCommand("INSERT INTO Author(firstName, lastName) VALUES (@firstName, @lastName);", connection))
             {
-                command.Parameters.AddWithValue("@name", element.Name);
+                command.Parameters.AddWithValue("@firstName", element.FirstName);
+                command.Parameters.AddWithValue("@lastName", element.LastName);
                 command.ExecuteNonQuery();
             }
         }
 
         public void UpdateData(Author element, List<int> column)
         {
-            using (SqlCommand command = new SqlCommand("UPDATE Author SET name = @name WHERE ID = @id;", connection))
+            string query = "UPDATE Members SET ";
+            for (int i = 0; i < column.Count; i++)
             {
-                command.Parameters.AddWithValue("@name", element.Name);
+                switch (column[i])
+                {
+                    case 1: 
+                        query += "firstName = @firstName"; 
+                        break;
+                    case 2: 
+                        query += "lastName = @lastName"; 
+                        break;
+                }
+                if (i < column.Count - 1) query += ", ";
+            }
+            query += " WHERE ID = @id;";
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@firstName", element.FirstName);
+                command.Parameters.AddWithValue("@lastName", element.LastName);
                 command.Parameters.AddWithValue("@id", element.ID);
                 command.ExecuteNonQuery();
             }
@@ -54,11 +78,11 @@ namespace Database_project.Tables
             using (SqlCommand command = new SqlCommand("SELECT * FROM Author;", connection))
             {
                 SqlDataReader reader = command.ExecuteReader();
-                Console.WriteLine("ID, Name");
+                Console.WriteLine("ID, First Name, Last Name");
                 Console.WriteLine();
                 while (reader.Read())
                 {
-                    Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}");
+                    Console.WriteLine($"{reader.GetInt32(0)}, {reader.GetString(1)}, {reader.GetString(2)}");
                 }
                 reader.Close();
                 Console.WriteLine();
