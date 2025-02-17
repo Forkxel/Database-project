@@ -30,6 +30,8 @@ bld/
 [Oo]ut/
 [Ll]og/
 [Ll]ogs/
+/bin/Debug/net8.0/*
+!/bin/Debug/net8.0/import.json
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
