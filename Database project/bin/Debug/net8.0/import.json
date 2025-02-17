@@ -1,0 +1,14 @@
+{
+    "author":[
+        {
+            "firstName" : "Franz",
+            "lastName" : "Kafka"
+        },
+        {
+            "firstName": "James",
+            "lastName" : "Joyce"
+        }
+    ],
+    
+    "category":["Fantasy", "History", "Detectives", "Comics"]
+}
