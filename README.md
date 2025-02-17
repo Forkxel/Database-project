@@ -4,7 +4,7 @@ Console based application for managing simple library database.
 
 ## Features
 
-1. Inserting, delete and update data to 5 different tables.
+1. Inserting, delete, print and update data to 5 different tables.
 2. Importing data from Json file to 2 different tables.
 3. Clearing all tables in database.
 
