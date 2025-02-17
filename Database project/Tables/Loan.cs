@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Database_project.Tables
 {
+    /// <summary>
+    /// Class for table Loans
+    /// </summary>
     public class Loan : IMethods<Loan>
     {
         public int ID { get; set; }
@@ -27,6 +30,10 @@ namespace Database_project.Tables
 
         public Loan() {}   
 
+        /// <summary>
+        /// Method to insert data to the table loans
+        /// </summary>
+        /// <param name="element">loan that is inserted to table</param>
         public void InsertData(Loan element)
         {
             using (SqlCommand command = new SqlCommand("INSERT INTO Loans (memberID, bookID, loanDate, returnDate) VALUES (@memberID, @bookID, @loanDate, @returnDate);", connection))
@@ -39,6 +46,11 @@ namespace Database_project.Tables
             }
         }
 
+        /// <summary>
+        /// Method to update data from table loans
+        /// </summary>
+        /// <param name="element">loan that is updated</param>
+        /// <param name="column">list of columns that are updated</param>
         public void UpdateData(Loan element, List<int> column)
         {
             string query = "UPDATE Loans SET ";
@@ -73,6 +85,10 @@ namespace Database_project.Tables
             }
         }
 
+        /// <summary>
+        /// Method to delete data from table loans
+        /// </summary>
+        /// <param name="element">loan that is deleted</param>
         public void DeleteData(Loan element)
         {
             using (SqlCommand command = new SqlCommand("DELETE FROM Loans WHERE ID = @id;", connection))
@@ -82,6 +98,9 @@ namespace Database_project.Tables
             }
         }
 
+        /// <summary>
+        /// Method to print all loans from database
+        /// </summary>
         public void WriteAll()
         {
             using (SqlCommand command = new SqlCommand("Select * FROM Loans;", connection))

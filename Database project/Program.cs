@@ -93,8 +93,8 @@
                         if (answer == "clear")
                         {
                             db.DropTables();
-                            Console.WriteLine("Database cleared");
-                            Console.WriteLine();
+                            Console.WriteLine("Database cleared.\nProgram will exit.");
+                            Environment.Exit(0);
                         }
                         else
                         {

@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Database_project
 {
+    /// <summary>
+    /// Class to load database connection through App.config
+    /// This class was used from our teacher's project DAOTretak
+    /// </summary>
     public class DatabaseConnection
     {
         private static SqlConnection? conn = null;

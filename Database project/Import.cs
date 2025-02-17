@@ -4,10 +4,16 @@ using Newtonsoft.Json;
 
 namespace Database_project;
 
+/// <summary>
+/// Class used to import Json files
+/// </summary>
 public class Import
 {
     private SqlConnection connection = DatabaseConnection.GetInstance();
 
+    /// <summary>
+    /// Method used to import to tables author and category from Json file
+    /// </summary>
     public void ImportJson()
     {
         var authorJson =

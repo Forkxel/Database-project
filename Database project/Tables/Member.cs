@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Database_project.Tables
 {
+    /// <summary>
+    /// Class for table Members
+    /// </summary>
     public class Member : IMethods<Member>
     {
         public int ID { get; set; }
@@ -26,6 +29,10 @@ namespace Database_project.Tables
 
         public Member() {}
 
+        /// <summary>
+        /// Method to insert data to the table members
+        /// </summary>
+        /// <param name="element">member that is inserted to table</param>
         public void InsertData(Member element)
         {
             using (SqlCommand command = new SqlCommand("INSERT INTO Members (firstName ,lastName ,email) VALUES (@firstName ,@lastName , @email);", connection))
@@ -37,6 +44,11 @@ namespace Database_project.Tables
             }
         }
 
+        /// <summary>
+        /// Method to update data from table members
+        /// </summary>
+        /// <param name="element">member that is updated</param>
+        /// <param name="column">list of columns that are updated</param>
         public void UpdateData(Member element, List<int> column)
         {
             string query = "UPDATE Members SET ";
@@ -67,6 +79,10 @@ namespace Database_project.Tables
             }
         }
 
+        /// <summary>
+        /// Method to delete data from table member
+        /// </summary>
+        /// <param name="element">member that is deleted</param>
         public void DeleteData(Member element)
         {
             using (SqlCommand command = new SqlCommand("DELETE FROM Members WHERE ID = @id;", connection))
@@ -76,6 +92,9 @@ namespace Database_project.Tables
             }
         }
 
+        /// <summary>
+        /// Method to print all members from database
+        /// </summary>
         public void WriteAll()
         {
             using (SqlCommand command = new SqlCommand("Select * FROM Members;", connection))

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Database_project.Tables
 {
+    /// <summary>
+    /// Class for table Books
+    /// </summary>
     public class Book : IMethods<Book>
     {
         private float price;
@@ -45,6 +48,10 @@ namespace Database_project.Tables
 
         public Book() {}
 
+        /// <summary>
+        /// Method to insert data to the table books
+        /// </summary>
+        /// <param name="element">book that is inserted to table</param>
         public void InsertData(Book element)
         {
             using (SqlCommand command = new SqlCommand("INSERT INTO Books (title, authorID, categoryID, price, isAvailable) VALUES (@title, @authorID, @categoryID, @price, @isAvailable);", connection))
@@ -58,6 +65,11 @@ namespace Database_project.Tables
             }
         }
 
+        /// <summary>
+        /// Method to update data from table books
+        /// </summary>
+        /// <param name="element">book that is updated</param>
+        /// <param name="column">list of columns that are updated</param>
         public void UpdateData(Book element, List<int> column)
         {
             string query = "UPDATE Books SET ";
@@ -96,6 +108,10 @@ namespace Database_project.Tables
             }
         }
 
+        /// <summary>
+        /// Method to delete data from table books
+        /// </summary>
+        /// <param name="element">book that is deleted</param>
         public void DeleteData(Book element)
         {
             using (SqlCommand command = new SqlCommand("DELETE FROM Books WHERE ID = @id;", connection))
@@ -105,6 +121,9 @@ namespace Database_project.Tables
             }
         }
 
+        /// <summary>
+        /// Method to print all books from database
+        /// </summary>
         public void WriteAll()
         {
             using (SqlCommand command = new SqlCommand("SELECT * FROM Books", connection))

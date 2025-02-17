@@ -11,16 +11,22 @@ using System.Threading.Tasks;
 
 namespace Database_project
 {
+    /// <summary>
+    /// Class for interacting with database
+    /// </summary>
     public class DatabaseInteraction
     {
         private SqlConnection connection = DatabaseConnection.GetInstance();
-        private Regex regex = new("^(\\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\\d|3[0-1])$");
+        private Regex regex = new("^(\\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\\d|3[0-1])$"); //regex used https://regex101.com/library/oE3yO7
         private Book book = new();
         private Author author = new();
         private Category category = new();
         private Loan loan = new();
         private Member member = new();
 
+        /// <summary>
+        /// Method used to create tables
+        /// </summary>
         public void CreateTables()
         {
             try
@@ -69,7 +75,10 @@ namespace Database_project
             }
             catch (Exception e) {}
         }
-
+        
+        /// <summary>
+        /// Method used to delete tables to clear database
+        /// </summary>
         public void DropTables()
         {
             try
@@ -118,6 +127,10 @@ namespace Database_project
             catch (Exception e) {}
         }
 
+        /// <summary>
+        /// Method to insert data to selected table
+        /// </summary>
+        /// <param name="table">number of table in the database</param>
         public void InsertData(int table)
         {
             try
@@ -213,6 +226,10 @@ namespace Database_project
             }
         }
 
+        /// <summary>
+        /// Method used to delete data from table
+        /// </summary>
+        /// <param name="table">number of table in the database</param>
         public void DeleteData(int table)
         {
             try
@@ -267,6 +284,10 @@ namespace Database_project
             }
         }
 
+        /// <summary>
+        /// Method used to update data in table
+        /// </summary>
+        /// <param name="table">number of selected table</param>
         public void UpdateData(int table)
         {
             try

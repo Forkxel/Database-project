@@ -8,6 +8,9 @@ using Newtonsoft.Json;
 
 namespace Database_project.Tables
 {
+    /// <summary>
+    /// Class for table Author
+    /// </summary>
     public class Author : IMethods<Author>
     {
         private SqlConnection connection = DatabaseConnection.GetInstance();
@@ -28,6 +31,10 @@ namespace Database_project.Tables
 
         public Author() {}
 
+        /// <summary>
+        /// Method to insert data to the table author
+        /// </summary>
+        /// <param name="element">author that is inserted to table</param>
         public void InsertData(Author element)
         {
             using (SqlCommand command = new SqlCommand("INSERT INTO Author(firstName, lastName) VALUES (@firstName, @lastName);", connection))
@@ -38,6 +45,11 @@ namespace Database_project.Tables
             }
         }
 
+        /// <summary>
+        /// Method to update data from table author
+        /// </summary>
+        /// <param name="element">author that is updated</param>
+        /// <param name="column">list of columns that are updated</param>
         public void UpdateData(Author element, List<int> column)
         {
             string query = "UPDATE Members SET ";
@@ -64,6 +76,10 @@ namespace Database_project.Tables
             }
         }
 
+        /// <summary>
+        /// Method to delete data from table author
+        /// </summary>
+        /// <param name="element">author that is deleted</param>
         public void DeleteData(Author element)
         {
             using (SqlCommand command = new SqlCommand("DELETE FROM Author WHERE ID = @id;", connection))
@@ -73,6 +89,9 @@ namespace Database_project.Tables
             }
         }
 
+        /// <summary>
+        /// Method to print all authors from database
+        /// </summary>
         public void WriteAll()
         {
             using (SqlCommand command = new SqlCommand("SELECT * FROM Author;", connection))
