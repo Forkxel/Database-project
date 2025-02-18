@@ -18,18 +18,28 @@ namespace Database_project
 
         public static SqlConnection GetInstance()
         {
-            if (conn == null)
+            try
             {
-                SqlConnectionStringBuilder consStringBuilder = new SqlConnectionStringBuilder();
-                consStringBuilder.UserID = ReadSetting("Name");
-                consStringBuilder.Password = ReadSetting("Password");
-                consStringBuilder.InitialCatalog = ReadSetting("Database");
-                consStringBuilder.DataSource = ReadSetting("DataSource");
-                consStringBuilder.ConnectTimeout = 30;
-                conn = new SqlConnection(consStringBuilder.ConnectionString);
-                conn.Open();
+                if (conn == null)
+                {
+                    SqlConnectionStringBuilder consStringBuilder = new SqlConnectionStringBuilder();
+                    consStringBuilder.UserID = ReadSetting("Name");
+                    consStringBuilder.Password = ReadSetting("Password");
+                    consStringBuilder.InitialCatalog = ReadSetting("Database");
+                    consStringBuilder.DataSource = ReadSetting("DataSource");
+                    consStringBuilder.ConnectTimeout = 30;
+                    conn = new SqlConnection(consStringBuilder.ConnectionString);
+                    conn.Open();
+                }
+
+                return conn;
             }
-            return conn;
+            catch (Exception e)
+            {
+                Console.WriteLine("Wrong App.config file.");
+                Environment.Exit(0);
+                throw;
+            }
         }
 
         private static string ReadSetting(string key)
