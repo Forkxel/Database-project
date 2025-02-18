@@ -53,13 +53,15 @@ Console based application for managing simple library database.
 ### Executing program
 
 First thing you will have to do after running application is to choose if you want to:
-1. Insert data
-2. Delete data
-3. Print data
-4. Update data
-5. Import data from Json file
-6. Clear the database 
-7. Exit application
+<ol>
+    <li><a href="#1-insert-data">Insert data</a></li>
+    <li><a href="#2-delete-data">Delete data</a></li>
+    <li><a href="#3-print-data">Print data</a></li>
+    <li><a href="#4-update-data">Update data</a></li>
+    <li><a href="#5-import-data-from-json-file">Import data from Json file</a></li>
+    <li><a href="#6-clear-database">Clear the database</a></li>
+    <li><a href="#7-exit-application">Exit application</a></li>
+</ol>
  
 #### 1. Insert data
 
