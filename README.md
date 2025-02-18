@@ -144,5 +144,6 @@ I hope I don't have to explain this :).
 
 ## Help
 
+If you do not use MSSQL server, this app might not work.
 If you need anything from me about this application contact me at:
 * pavel.halik06@gmail.com
